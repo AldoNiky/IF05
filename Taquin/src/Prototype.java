@@ -1,7 +1,7 @@
 
 public class Prototype {
 
-	/**
+	/** Main du programme
 	 * @param args
 	 */
 	public static void main(String[] args) {
