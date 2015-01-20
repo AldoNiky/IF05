@@ -20,25 +20,29 @@ public class Taquin {
 	// 2 : Gauche
 	// 3 : Droite
 	/**
-	 * Cette méthode déplace la case vide selon la direction donnée en paramètre
+	 * Cette methode deplace la case vide selon la direction donnee en parametre
 	 * @param direction
 	 * @throws ImpossibleMoveException
 	 */
 	public void deplacement(int direction) throws ImpossibleMoveException {
 		if(estAuBord(direction)) throw new ImpossibleMoveException();
 		int taille = (int) Math.sqrt(damier.size()), vide = damier.indexOf(0);
-		if(direction == 0) inverser(vide, vide - taille);
-		else if(direction == 1) inverser(vide, vide + taille);
-		else if(direction == 2) inverser(vide, vide - 1);
-		else inverser(vide, vide + 1);
+		switch(direction) {
+		case 0: inverser(vide, vide - taille);
+		case 1: inverser(vide, vide + taille);
+		case 2: inverser(vide, vide - 1);
+		case 3: inverser(vide, vide + 1);
+		}
 	}
 	public boolean estAuBord(int direction) {
 		int nbCarreaux = damier.size(), taille = (int) Math.sqrt(damier.size()), vide = damier.indexOf(0);
-		if(direction == 0) return vide < taille;
-		else if(direction == 1) return vide >= nbCarreaux - taille;
-		else if(direction == 2) return vide % taille == 0;
-		else if(direction == 3) return (vide + 1) % taille == 0;
-		return true;
+		switch(direction) {
+		case 0: return vide < taille;
+		case 1: return vide >= nbCarreaux - taille;
+		case 2: return vide % taille == 0;
+		case 3: return (vide + 1) % taille == 0;
+		default: return true;
+		}
 	}
 	public boolean estResolu() {
 		int nbCarreaux = damier.size();
