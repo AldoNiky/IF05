@@ -4,6 +4,13 @@ import java.util.ArrayList;
 
 public class Taquin {
 	private ArrayList<Integer> damier = new ArrayList<Integer>();
+	/**
+	 * Constructeur d'un Taquin
+	 * @param taille
+	 * <p>
+	 * taille de la matrice
+	 * </p>
+	 */
 	public Taquin(int taille) {
 		for(int i = 0; i < Math.pow(taille, 2); i++) damier.add(i);
 		melanger();
@@ -12,6 +19,11 @@ public class Taquin {
 	// 1 : Bas
 	// 2 : Gauche
 	// 3 : Droite
+	/**
+	 * Cette méthode déplace la case vide selon la direction donnée en paramètre
+	 * @param direction
+	 * @throws ImpossibleMoveException
+	 */
 	public void deplacement(int direction) throws ImpossibleMoveException {
 		if(estAuBord(direction)) throw new ImpossibleMoveException();
 		int taille = (int) Math.sqrt(damier.size()), vide = damier.indexOf(0);
