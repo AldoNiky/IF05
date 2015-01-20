@@ -1,9 +1,6 @@
 
 public class Prototype {
-
-	/** Main du programme
-	 * @param args
-	 */
+	
 	public static void main(String[] args) {
 		//On cree une matrice 3x3
 		int [][] jeu={{1,2,3},
