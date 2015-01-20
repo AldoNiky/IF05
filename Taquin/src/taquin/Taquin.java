@@ -28,10 +28,10 @@ public class Taquin {
 		if(estAuBord(direction)) throw new ImpossibleMoveException();
 		int taille = (int) Math.sqrt(damier.size()), vide = damier.indexOf(0);
 		switch(direction) {
-		case 0: inverser(vide, vide - taille);
-		case 1: inverser(vide, vide + taille);
-		case 2: inverser(vide, vide - 1);
-		case 3: inverser(vide, vide + 1);
+		case 0: inverser(vide, vide - taille); break;
+		case 1: inverser(vide, vide + taille); break;
+		case 2: inverser(vide, vide - 1); break;
+		case 3: inverser(vide, vide + 1); break;
 		}
 	}
 	public boolean estAuBord(int direction) {
