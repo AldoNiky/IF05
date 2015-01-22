@@ -3,7 +3,7 @@ package taquin;
 import java.util.ArrayList;
 
 public class Taquin {
-	public ArrayList<Integer> damier = new ArrayList<Integer>();
+	private ArrayList<Integer> damier = new ArrayList<Integer>();
 	/**
 	 * Constructeur d'un Taquin
 	 * @param taille
