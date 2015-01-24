@@ -13,7 +13,10 @@ public class Taquin {
 	 */
 	public Taquin(int taille) {
 		for(int i = 0; i < Math.pow(taille, 2); i++) damier.add(i);
-		melanger();
+		do{
+			melanger();
+		}while(!this.resolvable());
+		
 	}
 	// 0 : Haut
 	// 1 : Bas
@@ -48,6 +51,23 @@ public class Taquin {
 		int nbCarreaux = damier.size();
 		for(int i = 0; i < nbCarreaux - 1; i++) if(damier.get(i) != damier.get(i + 1) - 1) return false;
 		return true;
+	}
+	private boolean resolvable(){
+		Object[]t=this.damier.toArray();
+		int permutation=0;
+		for(int i=0;i<t.length;i++){
+			if((int)t[i]!=i){
+				for(int j=i+1;j<t.length;j++){
+					if((int)t[j]!=i){
+						t[j]=t[i];
+						t[i]=i;
+						permutation++;
+						break;
+					}
+				}
+			}
+		}
+		return permutation%2==0;
 	}
 	public void inverser(int index1, int index2) {
 		int carreau1 = damier.get(index1), carreau2 = damier.get(index2);
