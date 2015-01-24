@@ -16,7 +16,7 @@ public class Taquin {
 		do{
 			melanger();
 		}while(!this.resolvable());
-		
+	
 	}
 	// 0 : Haut
 	// 1 : Bas
@@ -52,7 +52,7 @@ public class Taquin {
 		for(int i = 0; i < nbCarreaux - 1; i++) if(damier.get(i) != damier.get(i + 1) - 1) return false;
 		return true;
 	}
-	private boolean resolvable(){
+	public boolean resolvable(){
 		Object[]t=this.damier.toArray();
 		int permutation=0;
 		for(int i=0;i<t.length;i++){
