@@ -58,7 +58,7 @@ public class Taquin {
 		for(int i=0;i<t.length;i++){
 			if((int)t[i]!=i){
 				for(int j=i+1;j<t.length;j++){
-					if((int)t[j]!=i){
+					if((int)t[j]==i){
 						t[j]=t[i];
 						t[i]=i;
 						permutation++;
