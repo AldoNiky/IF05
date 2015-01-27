@@ -8,9 +8,9 @@ import taquin.Taquin;
 public class TestTaquin {
 
 	@Test
-	public void test() { //a tester sans la condition resolvable dans le constructeur de Taquin
+	public void testResolvable() { //a tester sans la condition resolvable dans le constructeur de Taquin
 		Taquin t = new Taquin(3);
-		assertTrue(t.resolvable());
+		assertTrue(t.estResolvable());
 	}
 	@Test
 	public void test1() { //a tester sans melanger dans le constructeur de Taquin

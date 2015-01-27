@@ -15,7 +15,7 @@ public class Taquin {
 		for(int i = 0; i < Math.pow(taille, 2); i++) damier.add(i);
 		do{
 			melanger();
-		}while(!this.resolvable());
+		}while(!this.estResolvable());
 	
 	}
 	// 0 : Haut
@@ -25,7 +25,9 @@ public class Taquin {
 	/**
 	 * Cette methode deplace la case vide selon la direction donnee en parametre
 	 * @param direction
+	 * L'entier determinant la direction
 	 * @throws ImpossibleMoveException
+	 * Une erreur est renvoyé si le déplacement n'est pas possible
 	 */
 	public void deplacement(int direction) throws ImpossibleMoveException {
 		if(estAuBord(direction)) throw new ImpossibleMoveException();
@@ -37,6 +39,13 @@ public class Taquin {
 		case 3: inverser(vide, vide + 1); break;
 		}
 	}
+	/**
+	 * Permet  de savoir si la case est au bord de la grille
+	 * @param direction
+	 * Determine la direction voulue
+	 * @return
+	 * Un boolean true si la case blanche est au bord, false sinon
+	 */
 	public boolean estAuBord(int direction) {
 		int nbCarreaux = damier.size(), taille = (int) Math.sqrt(damier.size()), vide = damier.indexOf(0);
 		switch(direction) {
@@ -47,12 +56,22 @@ public class Taquin {
 		default: return true;
 		}
 	}
+	/**
+	 * Methode pour savoir si le jeu est resolu
+	 * @return
+	 * Un boolean true si le jeu est resolue, false sinon
+	 */
 	public boolean estResolu() {
 		int nbCarreaux = damier.size();
 		for(int i = 0; i < nbCarreaux - 1; i++) if(damier.get(i) != damier.get(i + 1) - 1) return false;
 		return true;
 	}
-	public boolean resolvable(){
+	/**
+	 * Methode pour savoir si le jeu est resoluble
+	 * @return
+	 * Un bolean true si il est et false sinon
+	 */
+	public boolean estResolvable(){
 		Object[]t=this.damier.toArray();
 		int permutation=0;
 		for(int i=0;i<t.length;i++){
@@ -69,6 +88,13 @@ public class Taquin {
 		}
 		return permutation%2==0;
 	}
+	/**
+	 * Permute deux cases
+	 * @param index1
+	 * L'indice de la case vide
+	 * @param index2
+	 * L'indice de l'autre case
+	 */
 	public void inverser(int index1, int index2) {
 		int carreau1 = damier.get(index1), carreau2 = damier.get(index2);
 		damier.remove(index1);
@@ -76,7 +102,12 @@ public class Taquin {
 		damier.remove(index2);
 		damier.add(index2, carreau1);
 	}
-	public void melanger() {
+	/**
+	 * Melange la grille de jeu
+	 * @return
+	 * Retourne la grille de jeu, permet de melanger successivement
+	 */
+	public ArrayList<Integer> melanger() {
 		int n, nbCarreaux = damier.size();
 		for(int i = 0; i < nbCarreaux; i++) {
 			do {
@@ -84,7 +115,11 @@ public class Taquin {
 			} while(i == n);
 			inverser(i, n);
 		}
+		return this.damier;
 	}
+	/**
+	 * Affiche du jeu
+	 */
 	public String toString() {
 		int nbCarreaux = damier.size(), taille = (int) Math.sqrt(damier.size());
 		String s = "";
