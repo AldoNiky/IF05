@@ -1,8 +1,9 @@
-package taquin;
+package TestTaquin;
 
 import static org.junit.Assert.*;
 
 import org.junit.Test;
+import taquin.Taquin;
 
 public class TestTaquin {
 
