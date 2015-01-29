@@ -1,9 +1,11 @@
 package taquin;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class Taquin {
 	private ArrayList<Integer> damier = new ArrayList<Integer>();
+	private int taille;
 	/**
 	 * Constructeur d'un Taquin
 	 * @param taille
@@ -12,11 +14,10 @@ public class Taquin {
 	 * </p>
 	 */
 	public Taquin(int taille) {
+		this.taille = taille;
 		for(int i = 0; i < Math.pow(taille, 2); i++) damier.add(i);
-		do{
-			melanger();
-		}while(!this.estResolvable());
-	
+		do melanger();
+		while(!estResolvable());
 	}
 	// 0 : Haut
 	// 1 : Bas
@@ -27,11 +28,11 @@ public class Taquin {
 	 * @param direction
 	 * L'entier determinant la direction
 	 * @throws ImpossibleMoveException
-	 * Une erreur est renvoyé si le déplacement n'est pas possible
+	 * Une erreur est renvoyee si le deplacement n'est pas possible
 	 */
 	public void deplacement(int direction) throws ImpossibleMoveException {
 		if(estAuBord(direction)) throw new ImpossibleMoveException();
-		int taille = (int) Math.sqrt(damier.size()), vide = damier.indexOf(0);
+		int vide = damier.indexOf(0);
 		switch(direction) {
 		case 0: inverser(vide, vide - taille); break;
 		case 1: inverser(vide, vide + taille); break;
@@ -47,7 +48,7 @@ public class Taquin {
 	 * Un boolean true si la case blanche est au bord, false sinon
 	 */
 	public boolean estAuBord(int direction) {
-		int nbCarreaux = damier.size(), taille = (int) Math.sqrt(damier.size()), vide = damier.indexOf(0);
+		int nbCarreaux = damier.size(), vide = damier.indexOf(0);
 		switch(direction) {
 		case 0: return vide < taille;
 		case 1: return vide >= nbCarreaux - taille;
@@ -71,22 +72,22 @@ public class Taquin {
 	 * @return
 	 * Un bolean true si il est et false sinon
 	 */
-	public boolean estResolvable(){
-		Object[]t=this.damier.toArray();
-		int permutation=0;
-		for(int i=0;i<t.length;i++){
-			if((int)t[i]!=i){
-				for(int j=i+1;j<t.length;j++){
-					if((int)t[j]==i){
-						t[j]=t[i];
-						t[i]=i;
+	public boolean estResolvable() {
+		Object[] t = damier.toArray();
+		int permutation = 0;
+		for (int i = 0; i < t.length; i++) {
+			if ((int) t[i] != i) {
+				for(int j = i + 1; j < t.length; j++) {
+					if((int) t[j] == i) {
+						t[j] = t[i];
+						t[i] = i;
 						permutation++;
 						break;
 					}
 				}
 			}
 		}
-		return permutation%2==0;
+		return permutation % 2 == 0;
 	}
 	/**
 	 * Permute deux cases
@@ -121,7 +122,7 @@ public class Taquin {
 	 * Affiche du jeu
 	 */
 	public String toString() {
-		int nbCarreaux = damier.size(), taille = (int) Math.sqrt(damier.size());
+		int nbCarreaux = damier.size();
 		String s = "";
 		for(int i = 0; i < nbCarreaux; i++) {
 			int n = damier.get(i);
@@ -131,5 +132,11 @@ public class Taquin {
 			if((i + 1) % taille == 0) s += "\n";
 		}
 		return s;
+	}
+	public ArrayList<Integer> getDamier() {
+		return damier;
+	}
+	public int getTaille() {
+		return taille;
 	}
 }
