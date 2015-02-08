@@ -1,10 +1,11 @@
 package taquin;
 
 import java.util.ArrayList;
-import java.util.Collections;
+import java.util.TreeMap;
 
-public class Taquin {
+public class Taquin implements Jeu {
 	private ArrayList<Integer> damier = new ArrayList<Integer>();
+	private TreeMap<Character,Integer> tabCorrespondance = new TreeMap<Character,Integer>();
 	private int taille;
 	/**
 	 * Constructeur d'un Taquin
@@ -18,13 +19,24 @@ public class Taquin {
 		for(int i = 0; i < Math.pow(taille, 2); i++) damier.add(i);
 		do melanger();
 		while(!estResolvable());
+		
+		//On initialise le tableau des correspondance
+		tabCorrespondance.put(new Character('z'),new Integer(1));
+		tabCorrespondance.put(new Character('s'),new Integer(0));
+		tabCorrespondance.put(new Character('q'),new Integer(3));
+		tabCorrespondance.put(new Character('d'),new Integer(2));
+		
 	}
-	// 0 : Haut
-	// 1 : Bas
-	// 2 : Gauche
-	// 3 : Droite
+	
+	public TreeMap<Character, Integer> getTabCorrespondance() {
+		return tabCorrespondance;
+	}
 	/**
 	 * Cette methode deplace la case vide selon la direction donnee en parametre
+	 * 0 : Haut
+	 * 1 : Bas
+	 * 2 : Gauche
+	 * 3 : Droite
 	 * @param direction
 	 * L'entier determinant la direction
 	 * @throws ImpossibleMoveException

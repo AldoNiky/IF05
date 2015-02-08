@@ -1,29 +1,37 @@
 package taquin;
 
+import java.awt.Event;
+import java.io.PrintStream;
 import java.util.Scanner;
 
 public class Test {
 	public static void main(String[] args) {
-		Scanner sc = new Scanner(System.in);
+		Scanner s = new Scanner(System.in);
+		Taquin t = new Taquin(Integer.parseInt(args[0]));
+		PrintStream pSortie = System.out;
+		jouer(t,s,pSortie);
+	}
+	
+	public static void jouer(Jeu pJeu, Scanner pScan, PrintStream pSortie){		
 		String deplacements = "";
-		Taquin t = new Taquin(3);
-		System.out.println(t);
-		while(!t.estResolu()) {
-				String s = sc.next();
-				char c = s.charAt(0);
-			try {
-				switch(c) {
-				case 'h': t.deplacement(0); deplacements += "H"; break;
-				case 'b': t.deplacement(1); deplacements += "B"; break;
-				case 'g': t.deplacement(2); deplacements += "G"; break;
-				case 'd': t.deplacement(3); deplacements += "D"; break;
-				}
-				System.out.println(t);
-			} catch(ImpossibleMoveException e) {
-				System.out.print("Impossible.\n" + t);
+		pSortie.println((char) Event.ESCAPE + "7");
+		pSortie.println(pJeu);
+		while(!pJeu.estResolu()){
+			String sc=pScan.next();
+			char c=sc.charAt(0);
+			try{
+				pJeu.deplacement(pJeu.getTabCorrespondance().get(c));
+				deplacements += c;
+				pSortie.println((char) Event.ESCAPE + "8");
+				pSortie.println(pJeu);
+			}catch(ImpossibleMoveException err){
+				pSortie.print("Impossible.\n");
 			}
 		}
-		System.out.println(t + "\nBravo ! Voici la liste des mouvements effectues : " + deplacements);
-		sc.close();
+		pSortie.println((char) Event.ESCAPE + "8");
+		pSortie.println(pJeu);
+		pSortie.println("Bravo vous avez gagné");
+		pSortie.println("Voici la liste des mouvements effectues : " + deplacements);
 	}
+	
 }
