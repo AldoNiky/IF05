@@ -151,4 +151,9 @@ public class Taquin implements Jeu {
 	public int getTaille() {
 		return taille;
 	}
+
+	@Override
+	public Object getSituationFinale() {
+		return null;
+	}
 }

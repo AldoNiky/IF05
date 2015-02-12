@@ -25,7 +25,7 @@ public class Test {
 				pSortie.println((char) Event.ESCAPE + "8");
 				pSortie.println(pJeu);
 			}catch(ImpossibleMoveException err){
-				pSortie.print("Impossible.\n");
+				pSortie.print(err.getMessage());
 			}
 		}
 		pSortie.println((char) Event.ESCAPE + "8");

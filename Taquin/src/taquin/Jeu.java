@@ -7,4 +7,6 @@ public interface Jeu {
 	public String toString();
 	public boolean estResolu();
 	public TreeMap<Character, Integer> getTabCorrespondance();
+	public Object getSituationFinale();
+	public int[] getCoupPossible();
 }
