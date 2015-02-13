@@ -156,4 +156,10 @@ public class Taquin implements Jeu {
 	public Object getSituationFinale() {
 		return null;
 	}
+
+	@Override
+	public int[] getCoupPossible() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }
