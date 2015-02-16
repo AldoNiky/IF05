@@ -1,6 +1,7 @@
 package taquin;
 
 import java.util.ArrayList;
+import java.util.Stack;
 import java.util.TreeMap;
 
 public class Taquin implements Jeu {
@@ -154,6 +155,7 @@ public class Taquin implements Jeu {
 
 	@Override
 	public Object getSituationFinale() {
+		//TODO
 		return null;
 	}
 
@@ -161,5 +163,17 @@ public class Taquin implements Jeu {
 	public int[] getCoupPossible() {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override
+	public void executeSerieCoups(Stack<Integer> pSerieCoups) {
+		for (int i=0; i<pSerieCoups.size(); i++){
+			try {
+				deplacement(pSerieCoups.pop());
+			} catch (ImpossibleMoveException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 	}
 }

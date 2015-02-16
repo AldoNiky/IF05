@@ -3,6 +3,7 @@ package taquin;
 import java.awt.Event;
 import java.io.PrintStream;
 import java.util.Scanner;
+import java.util.Stack;
 
 public class Test {
 	public static void main(String[] args) {
@@ -34,4 +35,14 @@ public class Test {
 		pSortie.println("Voici la liste des mouvements effectues : " + deplacements);
 	}
 	
+	public static void algoSurChemin(Jeu pJeu){
+		
+		//Initialisations de quelque variables
+		Stack<Integer> cheminDeRecherche= new Stack<Integer>();
+		int profondeur=0;
+		
+		//Algorithme de parcours
+		
+		
+	}
 }
