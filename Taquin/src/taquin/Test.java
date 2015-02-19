@@ -7,78 +7,89 @@ import java.util.Stack;
 
 public class Test {
 	public static void main(String[] args) {
-		//on initialise un scanner d'entrée
+		// on initialise un scanner d'entree
 		Scanner s = new Scanner(System.in);
-		//Un jeu
-		Taquin t = new Taquin(Integer.parseInt(args[0]));
-		//Un flux de sortie
+		// Un jeu
+		Taquin t = new Taquin(Integer.parseInt(args[0]),
+				Integer.parseInt(args[1]));
+		// Un flux de sortie
 		PrintStream pSortie = System.out;
-		//On lance la partie
-		jouer(t,s,pSortie);
+		// On lance la partie
+		jouer(t, s, pSortie);
 	}
+
 	/**
-	 * Permet de jouer a un jeu quelconque sur un flux d'entrée et de sortie paramétrable
+	 * Permet de jouer a un jeu quelconque sur un flux d'entree et de sortie
+	 * parametrable
+	 * 
 	 * @param pJeu
-	 * Le jeu à jouer
+	 *            Le jeu a jouer
 	 * @param pScan
-	 * Le flux d'entrée
+	 *            Le flux d'entree
 	 * @param pSortie
-	 * Le flux de sortie
+	 *            Le flux de sortie
 	 */
-	public static void jouer(Jeu pJeu, Scanner pScan, PrintStream pSortie){
-		//Un string pour enregistrer les déplacements
+	public static void jouer(Jeu pJeu, Scanner pScan, PrintStream pSortie) {
+		// Un string pour enregistrer les deplacements
 		String deplacements = "";
-		//On enregistre la posistion du curseur au début du programme, pour y revenir après
+		// On enregistre la posistion du curseur au debut du programme, pour y
+		// revenir apres
 		pSortie.println((char) Event.ESCAPE + "7");
 		pSortie.println(pJeu);
-		//On boucle tant que le jeu n'est pas résolu
-		while(!pJeu.estResolu()){
-			//Lecture du caractère tappé au clavier
-			String sc=pScan.next();
-			char c=sc.charAt(0);
-			//On essaie d'effectuer le déplacement voulue
-			try{
-				//On récupére la correspondance touche | déplacement
-				//C'est la méthode déplacement qui peut retourner une erreur
+		// On boucle tant que le jeu n'est pas resolu
+		while (!pJeu.estResolu()) {
+			// Lecture du caractere tappe au clavier
+			String sc = pScan.next();
+			char c = sc.charAt(0);
+			// On essaie d'effectuer le deplacement voulue
+			try {
+				// On recupere la correspondance touche | deplacement
+				// C'est la methode deplacement qui peut retourner une erreur
 				pJeu.deplacement(pJeu.getTabCorrespondance().get(c));
-				//On ajoute les déplacement au déplacement effectuer
+				// On ajoute les deplacements au deplacement effectuer
 				deplacements += c;
-				//On revient à la position de départ
+				// On revient a la position de depart
 				pSortie.println((char) Event.ESCAPE + "8");
-				//Et on réecrit le jeu par dessus l'ancien 
+				// Et on reecrit le jeu par dessus l'ancien
 				pSortie.println(pJeu);
-			}catch(ImpossibleMoveException err){
+			} catch (ImpossibleMoveException err) {
 				pSortie.print(err.getMessage());
 			}
 		}
-		//On revient au début
+		// On revient au debut
 		pSortie.println((char) Event.ESCAPE + "8");
 		pSortie.println(pJeu);
-		pSortie.println("Bravo vous avez gagné");
+		pSortie.println("Bravo vous avez gagne");
 		pSortie.println("Voici la liste des mouvements effectues : " + deplacements);
 	}
+
 	/**
-	 * Algorithlme de résolution d'un jeu quelconque
+	 * Algorithme de resolution d'un jeu quelconque
 	 * <p>
-	 * Cette algorithme fais un parcours a approfondissement progressif  largeur/profondeur
+	 * Cette algorithme fais un parcours a approfondissement progressif
+	 * largeur/profondeur
 	 * </p>
+	 * 
 	 * @param pJeu
-	 * Le jeu à résoudre
+	 * Le jeu a resoudre
 	 */
-	public static void algoSurChemin(Jeu pJeu){
-		//Initialisations de quelques variables
-		Stack<Integer> cheminDeRecherche= new Stack<Integer>();
-		int profondeur=0;
-		
-		//Algorithme de parcours
-		for(int j=0; j<profondeur; j++){
-			for (int i=0; i<4; i++){
-				if (!cheminDeRecherche.isEmpty())
-					cheminDeRecherche.pop();
-				cheminDeRecherche.push(i);
-				pJeu.executeSerieCoups(cheminDeRecherche);
+	public static void algoSurChemin(Jeu pJeu) {
+		// Initialisations de quelques variables
+		Stack<Integer> cheminDeRecherche = new Stack<Integer>();
+		int profondeur = 0;
+		int nbtest = 4;
+
+		// Algorithme de parcours
+		while (!pJeu.estResolu()) {
+			profondeur++;
+			for (int i = 0; i < nbtest; i++) {
+
 			}
+			nbtest = nbtest * 4;
 		}
+	}
+	
+	public static Taquin parseur(File ){
 		
 	}
 }

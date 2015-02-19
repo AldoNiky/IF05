@@ -2,7 +2,8 @@ package taquin;
 
 public class ImpossibleMoveException extends Exception {
 	private static final long serialVersionUID = 1L;
-	public ImpossibleMoveException(){
+
+	public ImpossibleMoveException() {
 		super("Mouvement non permis");
 	}
 }
