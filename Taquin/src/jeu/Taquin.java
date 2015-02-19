@@ -9,7 +9,7 @@ import exception.ImpossibleMoveException;
 
 
 public class Taquin implements Jeu {
-	private ArrayList<Integer> damier = new ArrayList<Integer>();
+	private int damier[][];
 	private TreeMap<Character, Integer> tabCorrespondance = new TreeMap<Character, Integer>();
 	private int hauteur;
 	private int largeur;
@@ -25,10 +25,15 @@ public class Taquin implements Jeu {
 	public Taquin(int pHauteur, int pLargeur) {
 		this.hauteur = pHauteur;
 		this.largeur = pLargeur;
-
-		int nbElem = this.hauteur * this.largeur;
-		for (int i = 0; i < nbElem; i++)
-			damier.add(i);
+		this.damier= new int[largeur][hauteur];
+		
+		int numero=0;
+		for(int i=0; i<largeur;i++){
+			for(int j=0; i<hauteur; i++){
+				damier[i][j]=numero;
+				numero++;
+			}
+		}
 		do
 			melanger();
 		while (!estResolvable());
@@ -172,7 +177,7 @@ public class Taquin implements Jeu {
 	 * Affiche du jeu
 	 */
 	public String toString() {
-		int nbCarreaux = damier.size();
+		int nbCarreaux = largeur*hauteur;
 		String s = "";
 		for (int i = 0; i < nbCarreaux; i++) {
 			int n = damier.get(i);
@@ -193,7 +198,7 @@ public class Taquin implements Jeu {
 	 * 
 	 * @return On retourne la grille de jeu
 	 */
-	public ArrayList<Integer> getDamier() {
+	public int[][] getDamier() {
 		return damier;
 	}
 
@@ -216,5 +221,18 @@ public class Taquin implements Jeu {
 				e.printStackTrace();
 			}
 		}
+	}
+	
+	public int[] getPositionCaseVide(){
+		for(int i=0; i<largeur;i++){
+			for(int j=0; i<hauteur; i++){
+				if (damier[i][j]==0){
+					int pos[]={i,j};
+					return pos;
+				}
+			}
+		}
+		//On a forcement une case vide dans le damier d'un taquin
+		return null;
 	}
 }
