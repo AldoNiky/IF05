@@ -1,8 +1,12 @@
-package taquin;
+package jeu;
 
 import java.util.ArrayList;
 import java.util.Stack;
 import java.util.TreeMap;
+
+import exception.ImpossibleMoveException;
+
+
 
 public class Taquin implements Jeu {
 	private ArrayList<Integer> damier = new ArrayList<Integer>();

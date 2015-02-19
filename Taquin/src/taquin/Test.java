@@ -5,6 +5,11 @@ import java.io.PrintStream;
 import java.util.Scanner;
 import java.util.Stack;
 
+import exception.ImpossibleMoveException;
+
+import jeu.Jeu;
+import jeu.Taquin;
+
 public class Test {
 	public static void main(String[] args) {
 		// on initialise un scanner d'entree

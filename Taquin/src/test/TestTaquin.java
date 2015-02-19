@@ -1,9 +1,9 @@
-package TestTaquin;
+package test;
 
 import static org.junit.Assert.*;
+import jeu.Taquin;
 
 import org.junit.Test;
-import taquin.Taquin;
 
 public class TestTaquin {
 
