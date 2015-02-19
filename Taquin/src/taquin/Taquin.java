@@ -106,8 +106,8 @@ public class Taquin implements Jeu {
 				for(int j = i + 1; j < t.length; j++) {
 					Sommet s2=(Sommet)t[j];
 					if( s2.getValeur() == i) {
-						t[j] = t[i];
-						t[i] = i;
+						t[j] = s;
+						t[i] = s2;
 						permutation++;
 						break;
 					}
@@ -167,8 +167,24 @@ public class Taquin implements Jeu {
 		return taille;
 	}
 	
-	private void deplacementAuto(ArrayList<Sommet> damier,int direction) throws ImpossibleMoveException {
-		if(estAuBord(direction)) throw new ImpossibleMoveException();
+	private boolean estAuBord(ArrayList<Sommet> damier,int direction) {
+		int nbCarreaux = damier.size(), vide=0;
+		for(int i=0;i<damier.size();i++){
+			if(damier.get(i).getValeur()==0) vide=i;
+		}
+		switch(direction) {
+		case 0: return vide < taille;
+		case 1: return vide >= nbCarreaux - taille;
+		case 2: return vide % taille == 0;
+		case 3: return (vide + 1) % taille == 0;
+		default: return true;
+		}
+	}
+	
+	private ArrayList<Sommet> deplacementAuto(ArrayList<Sommet> damier,int direction) throws ImpossibleMoveException {
+		@SuppressWarnings("unchecked")
+		ArrayList<Sommet> d=(ArrayList<Sommet>) damier.clone();
+		if(estAuBord(d,direction)) throw new ImpossibleMoveException();
 		int changePost=-1;
 		for(int i=0;i<damier.size();i++){
 			if(damier.get(i).getValeur()==0){
@@ -186,13 +202,14 @@ public class Taquin implements Jeu {
 					changePost=i+1;
 					break;
 				}
-				if(!damier.get(changePost).HasBeenVisited()){
-					inverser(damier,i, changePost);
-					damier.get(changePost).visiter();
-				}
+				if(!d.get(changePost).HasBeenVisited()){
+					d.get(changePost).visiter();
+					inverser(d,i, changePost); 
+				}else throw new ImpossibleMoveException();
 				break;
 			}
 		}
+		return d;
 	}
 	
 	private void inverser(ArrayList<Sommet> damier,int index1, int index2) {
@@ -209,39 +226,31 @@ public class Taquin implements Jeu {
 		return true;
 	}
 	
-	private boolean tousVisiter(ArrayList<Sommet> damier){
-		for(int i=0;i<damier.size();i++){
-			if(!damier.get(i).HasBeenVisited() && damier.get(i).getValeur()!=0) return false;
-		}
-		return true;
-	}
-	
-	private String profondeur(ArrayList<Sommet> damier,int direction,String chemin) throws Exception {
+	private String profondeur(ArrayList<Sommet> damier,int direction,String chemin){
+		System.out.println("Tour "+direction+": "+damier);
 		try{
 			if(this.estResolu(damier)) return chemin;
 			else{
-				return this.profondeur(this.deplacementAuto(damier, direction), direction+1, chemin);
+				ArrayList<Sommet> d=this.deplacementAuto(damier, direction);
+				System.out.println("Après modif de la direction "+direction+" : "+d);
+				return this.profondeur(d, 0, chemin);
 			}
-		}catch(Exception e){
+		}catch(ImpossibleMoveException e){
 			
 		}
 		if(direction<4) return this.profondeur(damier, direction+1, chemin);
-		else throw new Exception();
+		else return "";
 	}
 	
-	public String resolution() throws Exception{
+	public String resolution() throws NoCombinaisonException{
 		@SuppressWarnings("unchecked")
 		ArrayList<Sommet> damier=(ArrayList<Sommet>)this.damier.clone();
 		ArrayList<String> solutions=new ArrayList<String>();
-		for(int i=0;i<4;i++){
-			try{
-				solutions.add(this.profondeur(damier, i, ""));
-			}catch (Exception e){
-				
-			}
-		}
+		String solution="";
+		if(this.profondeur(damier, 0, "")!="") solution= this.profondeur(damier, 0, "");
+		solutions.add(solution);
 		Collections.sort(solutions,new comparerList());
-		if(solutions.isEmpty()) throw new Exception("Il y a une erreu !");
+		if(solutions.isEmpty()) throw new NoCombinaisonException("Erreur ! Pas de combinaison !");
 		else return solutions.get(0);
 	}
 	

@@ -8,6 +8,11 @@ public class Test {
 	public static void main(String[] args) {
 		Scanner s = new Scanner(System.in);
 		Taquin t = new Taquin(Integer.parseInt(args[0]));
+		try {
+			System.out.println(t.resolution());
+		} catch (NoCombinaisonException e) {
+			
+		}
 		PrintStream pSortie = System.out;
 		jouer(t,s,pSortie);
 	}

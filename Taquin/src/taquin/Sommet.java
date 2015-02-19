@@ -22,4 +22,7 @@ public class Sommet {
 		return visiter;
 	}
 
+	public String toString(){
+		return this.valeur+"";
+	}
 }
