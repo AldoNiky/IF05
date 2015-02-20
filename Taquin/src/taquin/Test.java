@@ -94,7 +94,7 @@ public class Test {
 		}
 	}
 	
-	public static Taquin parseur(File ){
-		
+	public static Taquin parseur(){
+		return null;
 	}
 }

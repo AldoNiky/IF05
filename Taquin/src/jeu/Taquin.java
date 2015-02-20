@@ -65,7 +65,7 @@ public class Taquin implements Jeu {
 		if (estAuBord(direction))
 			throw new ImpossibleMoveException();
 		// On recupere la position de la case vide
-		int vide = damier.indexOf(0);
+		int vide[]=getPositionCaseVide();
 		switch (direction) {
 		case 0:
 			inverser(vide, vide - hauteur);
