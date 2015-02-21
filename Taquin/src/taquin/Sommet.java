@@ -1,6 +1,6 @@
 package taquin;
 
-public class Sommet {
+public class Sommet implements Cloneable {
 
 	private int valeur;
 	private boolean visiter;
@@ -13,7 +13,17 @@ public class Sommet {
 	public void visiter(){
 		this.visiter=true;
 	}
-
+	
+	public Sommet clone(){
+		Sommet o=null;
+		try {
+			o=(Sommet)super.clone();
+		} catch (CloneNotSupportedException e) {
+			
+		}
+		return o;
+	}
+	
 	public int getValeur() {
 		return valeur;
 	}
@@ -23,6 +33,6 @@ public class Sommet {
 	}
 
 	public String toString(){
-		return this.valeur+"";
+		return this.valeur+(this.visiter?"T":"F");
 	}
 }

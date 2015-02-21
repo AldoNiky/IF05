@@ -182,8 +182,7 @@ public class Taquin implements Jeu {
 	}
 	
 	private ArrayList<Sommet> deplacementAuto(ArrayList<Sommet> damier,int direction) throws ImpossibleMoveException {
-		@SuppressWarnings("unchecked")
-		ArrayList<Sommet> d=(ArrayList<Sommet>) damier.clone();
+		ArrayList<Sommet> d=this.clone(damier);
 		if(estAuBord(d,direction)) throw new ImpossibleMoveException();
 		int changePost=-1;
 		for(int i=0;i<damier.size();i++){
@@ -226,29 +225,34 @@ public class Taquin implements Jeu {
 		return true;
 	}
 	
-	private String profondeur(ArrayList<Sommet> damier,int direction,String chemin){
-		System.out.println("Tour "+direction+": "+damier);
-		try{
-			if(this.estResolu(damier)) return chemin;
-			else{
-				ArrayList<Sommet> d=this.deplacementAuto(damier, direction);
-				System.out.println("Après modif de la direction "+direction+" : "+d);
-				return this.profondeur(d, 0, chemin);
+	private void profondeur(ArrayList<String> s, ArrayList<Sommet> damier,String chemin){
+		for(int i=0;i<4;i++){
+			System.out.println("Tour "+i+": "+damier);
+			try{
+				if(this.estResolu(damier)){
+					s.add(chemin);
+					break;
+				}
+				else{
+					ArrayList<Sommet> d=this.deplacementAuto(damier, i);
+					System.out.println("Après modif de la direction "+i+" : "+d);
+					this.profondeur(s, d, chemin+i);
+				}
+			}catch(ImpossibleMoveException e){
+				
 			}
-		}catch(ImpossibleMoveException e){
-			
 		}
-		if(direction<4) return this.profondeur(damier, direction+1, chemin);
-		else return "";
+	}
+	
+	private ArrayList<Sommet> clone(ArrayList<Sommet> d){
+		ArrayList<Sommet> damier=new ArrayList<Sommet>();
+		for(int i=0;i<d.size();i++) damier.add(d.get(i).clone());
+		return damier;
 	}
 	
 	public String resolution() throws NoCombinaisonException{
-		@SuppressWarnings("unchecked")
-		ArrayList<Sommet> damier=(ArrayList<Sommet>)this.damier.clone();
 		ArrayList<String> solutions=new ArrayList<String>();
-		String solution="";
-		if(this.profondeur(damier, 0, "")!="") solution= this.profondeur(damier, 0, "");
-		solutions.add(solution);
+		this.profondeur(solutions,damier, "");
 		Collections.sort(solutions,new comparerList());
 		if(solutions.isEmpty()) throw new NoCombinaisonException("Erreur ! Pas de combinaison !");
 		else return solutions.get(0);
