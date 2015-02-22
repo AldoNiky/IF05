@@ -3,10 +3,9 @@ package taquin;
 import java.util.*;
 
 public class Taquin implements Jeu {
-	private ArrayList<Sommet> damier = new ArrayList<Sommet>();
+	private ArrayList<Integer> damier = new ArrayList<Integer>();
 	private TreeMap<Character,Integer> tabCorrespondance = new TreeMap<Character,Integer>();
 	private int taille;
-
 	/**
 	 * Constructeur d'un Taquin
 	 * @param taille
@@ -16,7 +15,7 @@ public class Taquin implements Jeu {
 	 */
 	public Taquin(int taille) {
 		this.taille = taille;
-		for(int i = 0; i < Math.pow(taille, 2); i++) damier.add(new Sommet(i));
+		for(int i = 0; i < Math.pow(taille, 2); i++) damier.add(i);
 		do melanger();
 		while(!estResolvable());
 		
@@ -28,10 +27,15 @@ public class Taquin implements Jeu {
 		
 	}
 	
-	public Taquin(Taquin t){
-		this.damier=t.damier;
-		this.tabCorrespondance=t.tabCorrespondance;
-		this.taille=t.taille;
+	public Taquin(int taille,ArrayList<Integer> d){
+		this.taille=taille;
+		for(int i=0;i<d.size();i++) this.damier.add(d.get(i)); 
+		
+		//On initialise le tableau des correspondance
+		tabCorrespondance.put(new Character('z'),new Integer(1));
+		tabCorrespondance.put(new Character('s'),new Integer(0));
+		tabCorrespondance.put(new Character('q'),new Integer(3));
+		tabCorrespondance.put(new Character('d'),new Integer(2));
 	}
 	
 	public TreeMap<Character, Integer> getTabCorrespondance() {
@@ -50,16 +54,12 @@ public class Taquin implements Jeu {
 	 */
 	public void deplacement(int direction) throws ImpossibleMoveException {
 		if(estAuBord(direction)) throw new ImpossibleMoveException();
-		for(int i=0;i<this.damier.size();i++){
-			if(this.damier.get(i).getValeur()==0){
-				switch(direction) {
-				case 0: inverser(i, i - taille); break;
-				case 1: inverser(i, i + taille); break;
-				case 2: inverser(i, i - 1); break;
-				case 3: inverser(i, i + 1); break;
-				}
-				break;
-			}
+		int vide = damier.indexOf(0);
+		switch(direction) {
+		case 0: inverser(vide, vide - taille); break;
+		case 1: inverser(vide, vide + taille); break;
+		case 2: inverser(vide, vide - 1); break;
+		case 3: inverser(vide, vide + 1); break;
 		}
 	}
 	/**
@@ -70,10 +70,7 @@ public class Taquin implements Jeu {
 	 * Un boolean true si la case blanche est au bord, false sinon
 	 */
 	public boolean estAuBord(int direction) {
-		int nbCarreaux = damier.size(), vide=0;
-		for(int i=0;i<this.damier.size();i++){
-			if(this.damier.get(i).getValeur()==0) vide=i;
-		}
+		int nbCarreaux = damier.size(), vide = damier.indexOf(0);
 		switch(direction) {
 		case 0: return vide < taille;
 		case 1: return vide >= nbCarreaux - taille;
@@ -89,7 +86,8 @@ public class Taquin implements Jeu {
 	 */
 	public boolean estResolu() {
 		int nbCarreaux = damier.size();
-		for(int i = 0; i < nbCarreaux - 1; i++) if(damier.get(i).getValeur() != damier.get(i + 1).getValeur() - 1) return false;
+		if(damier.get(nbCarreaux-1)!=0) return false;
+		for(int i = 0; i < nbCarreaux - 2; i++) if(damier.get(i) != i+1) return false;
 		return true;
 	}
 	/**
@@ -101,13 +99,11 @@ public class Taquin implements Jeu {
 		Object[] t = damier.toArray();
 		int permutation = 0;
 		for (int i = 0; i < t.length; i++) {
-			Sommet s=(Sommet)t[i];
-			if (s.getValeur() != i) {
+			if ((int) t[i] != i) {
 				for(int j = i + 1; j < t.length; j++) {
-					Sommet s2=(Sommet)t[j];
-					if( s2.getValeur() == i) {
-						t[j] = s;
-						t[i] = s2;
+					if((int) t[j] == i) {
+						t[j] = t[i];
+						t[i] = i;
 						permutation++;
 						break;
 					}
@@ -124,18 +120,18 @@ public class Taquin implements Jeu {
 	 * L'indice de l'autre case
 	 */
 	public void inverser(int index1, int index2) {
-		Sommet carreau1=damier.get(index1), carreau2=damier.get(index2);
+		int carreau1 = damier.get(index1), carreau2 = damier.get(index2);
 		damier.remove(index1);
-		damier.add(index1,carreau2);
+		damier.add(index1, carreau2);
 		damier.remove(index2);
-		damier.add(index2,carreau1);
+		damier.add(index2, carreau1);
 	}
 	/**
 	 * Melange la grille de jeu
 	 * @return
 	 * Retourne la grille de jeu, permet de melanger successivement
 	 */
-	public ArrayList<Sommet> melanger() {
+	public ArrayList<Integer> melanger() {
 		int n, nbCarreaux = damier.size();
 		for(int i = 0; i < nbCarreaux; i++) {
 			do {
@@ -152,7 +148,7 @@ public class Taquin implements Jeu {
 		int nbCarreaux = damier.size();
 		String s = "";
 		for(int i = 0; i < nbCarreaux; i++) {
-			int n = damier.get(i).getValeur();
+			int n = damier.get(i);
 			if(n == 0) s += "   ";
 			else if(n < 10) s += " " + n + " ";
 			else s += n + " ";
@@ -160,17 +156,38 @@ public class Taquin implements Jeu {
 		}
 		return s;
 	}
-	public ArrayList<Sommet> getDamier() {
+	public ArrayList<Integer> getDamier() {
 		return damier;
 	}
 	public int getTaille() {
 		return taille;
 	}
-	
-	private boolean estAuBord(ArrayList<Sommet> damier,int direction) {
+
+	public Object getSituationFinale() {
+		//TODO
+		return null;
+	}
+
+	public int[] getCoupPossible() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public void executeSerieCoups(Stack<Integer> pSerieCoups) {
+		for (int i=0; i<pSerieCoups.size(); i++){
+			try {
+				deplacement(pSerieCoups.pop());
+			} catch (ImpossibleMoveException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+	}
+
+	private boolean estAuBord(ArrayList<Integer> damier,int direction) {
 		int nbCarreaux = damier.size(), vide=0;
 		for(int i=0;i<damier.size();i++){
-			if(damier.get(i).getValeur()==0) vide=i;
+			if(damier.get(i)==0) vide=i;
 		}
 		switch(direction) {
 		case 0: return vide < taille;
@@ -181,12 +198,12 @@ public class Taquin implements Jeu {
 		}
 	}
 	
-	private ArrayList<Sommet> deplacementAuto(ArrayList<Sommet> damier,int direction) throws ImpossibleMoveException {
-		ArrayList<Sommet> d=this.clone(damier);
+	private ArrayList<Integer> deplacementAuto(ArrayList<Integer> damier,int direction) throws ImpossibleMoveException {
+		ArrayList<Integer> d=this.clone(damier);
 		if(estAuBord(d,direction)) throw new ImpossibleMoveException();
 		int changePost=-1;
 		for(int i=0;i<damier.size();i++){
-			if(damier.get(i).getValeur()==0){
+			if(damier.get(i)==0){
 				switch(direction) {
 				case 0:
 					changePost=i-taille;
@@ -201,31 +218,29 @@ public class Taquin implements Jeu {
 					changePost=i+1;
 					break;
 				}
-				if(!d.get(changePost).HasBeenVisited()){
-					d.get(changePost).visiter();
-					inverser(d,i, changePost); 
-				}else throw new ImpossibleMoveException();
+				inverser(d,i, changePost); 
 				break;
 			}
 		}
 		return d;
 	}
 	
-	private void inverser(ArrayList<Sommet> damier,int index1, int index2) {
-		Sommet carreau1=damier.get(index1), carreau2=damier.get(index2);
+	private void inverser(ArrayList<Integer> damier,int index1, int index2) {
+		int carreau1=damier.get(index1), carreau2=damier.get(index2);
 		damier.remove(index1);
 		damier.add(index1,carreau2);
 		damier.remove(index2);
 		damier.add(index2,carreau1);
 	}
 	
-	private boolean estResolu(ArrayList<Sommet> damier) {
+	private boolean estResolu(ArrayList<Integer> damier) {
 		int nbCarreaux = damier.size();
-		for(int i = 0; i < nbCarreaux - 1; i++) if(damier.get(i).getValeur() != damier.get(i + 1).getValeur() - 1) return false;
+		if(damier.get(nbCarreaux-1)!=0) return false;
+		for(int i = 0; i < nbCarreaux - 2; i++) if(damier.get(i) != i+1) return false;
 		return true;
 	}
 	
-	private void profondeur(ArrayList<String> s, ArrayList<Sommet> damier,String chemin){
+	private void profondeur(ArrayList<String> s, ArrayList<Integer> damier,String chemin){
 		for(int i=0;i<4;i++){
 			System.out.println("Tour "+i+": "+damier);
 			try{
@@ -234,9 +249,29 @@ public class Taquin implements Jeu {
 					break;
 				}
 				else{
-					ArrayList<Sommet> d=this.deplacementAuto(damier, i);
-					System.out.println("Après modif de la direction "+i+" : "+d);
-					this.profondeur(s, d, chemin+i);
+					boolean bon=false;
+					if(chemin=="") bon=true;
+					else{
+						switch(chemin.charAt(chemin.length()-1)){
+							case '0':
+								bon=(i!=1);
+								break;
+							case '1':
+								bon=(i!=0);
+								break;
+							case '2':
+								bon=(i!=3);
+								break;
+							case '3':
+								bon=(i!=2);
+								break;
+						}
+					}
+					if(bon){
+						ArrayList<Integer> d=this.deplacementAuto(damier, i);
+						System.out.println("Après modif de la direction "+i+" : "+d);
+						this.profondeur(s, d, chemin+i);
+					}
 				}
 			}catch(ImpossibleMoveException e){
 				
@@ -244,18 +279,25 @@ public class Taquin implements Jeu {
 		}
 	}
 	
-	private ArrayList<Sommet> clone(ArrayList<Sommet> d){
-		ArrayList<Sommet> damier=new ArrayList<Sommet>();
-		for(int i=0;i<d.size();i++) damier.add(d.get(i).clone());
+	private ArrayList<Integer> clone(ArrayList<Integer> d){
+		ArrayList<Integer> damier=new ArrayList<Integer>();
+		for(int i=0;i<d.size();i++) damier.add(d.get(i));
 		return damier;
 	}
 	
 	public String resolution() throws NoCombinaisonException{
 		ArrayList<String> solutions=new ArrayList<String>();
-		this.profondeur(solutions,damier, "");
+		try {
+			this.profondeur(solutions,damier, "");
+		}catch (StackOverflowError e) {
+			
+		} 
 		Collections.sort(solutions,new comparerList());
 		if(solutions.isEmpty()) throw new NoCombinaisonException("Erreur ! Pas de combinaison !");
-		else return solutions.get(0);
+		else{
+			System.out.println("La liste des combinaisons possibles pour résoudre ce taquin : "+solutions);
+			return solutions.get(0);
+		}
 	}
 	
 }

@@ -2,15 +2,19 @@ package taquin;
 
 import java.awt.Event;
 import java.io.PrintStream;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Test {
 	public static void main(String[] args) {
 		Scanner s = new Scanner(System.in);
 		Taquin t = new Taquin(Integer.parseInt(args[0]));
+		ArrayList<Integer> d=new ArrayList<Integer>();
+		d.add(4);d.add(1);d.add(3);d.add(7);d.add(2);d.add(6);d.add(5);d.add(8);d.add(0);
+		Taquin t1=new Taquin(3, d);
 		try {
-			System.out.println(t.resolution());
-		} catch (NoCombinaisonException e) {
+			System.out.println("La solution la plus optimale est :"+t.resolution());
+		}catch (NoCombinaisonException e) {
 			
 		}
 		PrintStream pSortie = System.out;

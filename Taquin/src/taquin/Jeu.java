@@ -1,5 +1,6 @@
 package taquin;
 
+import java.util.Stack;
 import java.util.TreeMap;
 
 public interface Jeu {
@@ -7,4 +8,7 @@ public interface Jeu {
 	public String toString();
 	public boolean estResolu();
 	public TreeMap<Character, Integer> getTabCorrespondance();
+	Object getSituationFinale();
+	int[] getCoupPossible();
+	void executeSerieCoups(Stack<Integer> pSerieCoups);
 }
