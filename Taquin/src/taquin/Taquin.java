@@ -1,6 +1,7 @@
 package taquin;
 
 import java.util.*;
+import java.util.Map.Entry;
 
 public class Taquin implements Jeu {
 	private ArrayList<Integer> damier = new ArrayList<Integer>();
@@ -298,6 +299,101 @@ public class Taquin implements Jeu {
 			System.out.println("La liste des combinaisons possibles pour résoudre ce taquin : "+solutions);
 			return solutions.get(0);
 		}
+	}
+	
+	//---------------------------------------------------------------- METHODE 2 de parcours ------------------------------------------------------------------------
+	
+	public String methode2Resolution() throws NoCombinaisonException{
+		String solution="";
+		try {
+			solution=this.parcours(solution, this.damier, this.taille, "");
+		}catch (StackOverflowError e) {
+			
+		} catch (TabException e) {
+			System.out.println(e.getMessage());
+		} catch (ProblemePacours e) {
+			System.out.println(e.getMessage());
+		} 
+		if(solution=="") throw new NoCombinaisonException("Erreur ! Pas de combinaison !");
+		else{
+			return solution;
+		}
+	}
+
+	private String parcours(String solution, ArrayList<Integer> damier, int taille, String chemin) throws TabException, ProblemePacours{
+		System.out.println("chemin :"+chemin);
+		System.out.println(damier);
+		//Cas de base je regarde si le taquin est résolu
+		Taquin p=new Taquin(taille,damier);
+		if(!p.estResolu()){
+			//Je parcours tout d'abord en largeur les 4 directions pour savoir s'il y a une solution
+			for(int i=0;i<4;i++){
+				Taquin t=new Taquin(taille,damier);
+				try {
+					t.deplacement(i);
+					// - S'il y en a bien une pas besoin de parcourir un autre noeud sur cette branche puisque ce chemin sera forcément plus petit
+					if(t.estResolu()){
+						return (chemin+ajouterDirection(i));
+					}
+				} catch (ImpossibleMoveException e) {
+					
+				}
+			}
+			// - S'il n'y en a pas je me lance sur une des 4 directions et je fais un parcours en profondeur
+			// Pour être le plus éfficace possible je fais la vérification dans le cas où j'ai déjà une solution:
+			//  - Si en effet il y en a une :
+			boolean plusLong=false;
+			if(solution!=""){
+				//Je regarde si cette solution n'est pas plus courte que le chemin où je m'aventure
+				plusLong=chemin.length()+1>=solution.length();
+			}
+			// si c'est le cas c'est inutile de continuer
+			if(!plusLong){
+				for(int i=0;i<4;i++){
+					try {
+						//NB: ce que j'appelle ici redondance directe c'est par exemple le fait d'avoir fais haut le coup d'avantet que là je fasse bas
+						boolean redondanceDirecte=false;
+						if(chemin!=""){
+							switch(i){
+								case 0:
+									redondanceDirecte=(chemin.charAt(chemin.length()-1) == 'z');
+									break;
+								case 1:
+									redondanceDirecte=(chemin.charAt(chemin.length()-1) == 's');
+									break;
+								case 2:
+									redondanceDirecte=(chemin.charAt(chemin.length()-1) == 'q');
+									break;
+								case 3:
+									redondanceDirecte=(chemin.charAt(chemin.length()-1) == 'd');
+									break;
+							}
+						}
+						// S'il n'y a pas de redondance directe je peux donc parcourir cette branche si c'est possible
+						if(!redondanceDirecte){
+							Taquin t=new Taquin(taille,damier);
+							t.deplacement(i);
+							return this.parcours(solution, t.damier, taille, chemin+this.ajouterDirection(i));
+						}
+					}catch (ImpossibleMoveException e) {
+						
+					}
+				}
+			}
+		}
+		throw new ProblemePacours("Il y a un problème sur le parcours !");
+		
+	}
+
+	private String ajouterDirection(int i) throws TabException {
+		Iterator<Entry<Character, Integer>> it=this.tabCorrespondance.entrySet().iterator();
+		while(it.hasNext()){
+			Entry<Character, Integer> e=it.next();
+			if(e.getValue()==i){
+				return e.getKey()+"";
+			}
+		}
+		throw new TabException("Il y a une erreur dans la table de correspondance !");
 	}
 	
 }
