@@ -15,12 +15,15 @@ public class Test {
 		// on initialise un scanner d'entree
 		Scanner s = new Scanner(System.in);
 		// Un jeu
-		Taquin t = new Taquin(Integer.parseInt(args[0]),
-				Integer.parseInt(args[1]));
+//		Taquin t = new Taquin(Integer.parseInt(args[0]),
+//				Integer.parseInt(args[1]));
+		Taquin t = new Taquin(3,3);
 		// Un flux de sortie
 		PrintStream pSortie = System.out;
 		// On lance la partie
 		jouer(t, s, pSortie);
+		//for(int i=0; i<10 ; i++)
+		//	pSortie.println( (int) ( Math.random() * 10 ) );
 	}
 
 	/**
@@ -94,7 +97,7 @@ public class Test {
 		}
 	}
 	
-	public static Taquin parseur(){
-		return null;
-	}
+//	public static Taquin parseur(File ){
+		
+//	}
 }
