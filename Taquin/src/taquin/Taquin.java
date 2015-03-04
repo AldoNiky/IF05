@@ -165,12 +165,10 @@ public class Taquin implements Jeu {
 	}
 
 	public Object getSituationFinale() {
-		//TODO
 		return null;
 	}
 
 	public int[] getCoupPossible() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
@@ -179,212 +177,87 @@ public class Taquin implements Jeu {
 			try {
 				deplacement(pSerieCoups.pop());
 			} catch (ImpossibleMoveException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
 	}
 
-	private boolean estAuBord(ArrayList<Integer> damier,int direction) {
-		int nbCarreaux = damier.size(), vide=0;
-		for(int i=0;i<damier.size();i++){
-			if(damier.get(i)==0) vide=i;
-		}
-		switch(direction) {
-		case 0: return vide < taille;
-		case 1: return vide >= nbCarreaux - taille;
-		case 2: return vide % taille == 0;
-		case 3: return (vide + 1) % taille == 0;
-		default: return true;
-		}
-	}
-	
-	private ArrayList<Integer> deplacementAuto(ArrayList<Integer> damier,int direction) throws ImpossibleMoveException {
-		ArrayList<Integer> d=this.clone(damier);
-		if(estAuBord(d,direction)) throw new ImpossibleMoveException();
-		int changePost=-1;
-		for(int i=0;i<damier.size();i++){
-			if(damier.get(i)==0){
-				switch(direction) {
-				case 0:
-					changePost=i-taille;
-					break;
-				case 1: 
-					changePost=i+taille;
-					break;
-				case 2:
-					changePost=i-1;
-					break;
-				case 3: 
-					changePost=i+1;
-					break;
-				}
-				inverser(d,i, changePost); 
-				break;
-			}
-		}
-		return d;
-	}
-	
-	private void inverser(ArrayList<Integer> damier,int index1, int index2) {
-		int carreau1=damier.get(index1), carreau2=damier.get(index2);
-		damier.remove(index1);
-		damier.add(index1,carreau2);
-		damier.remove(index2);
-		damier.add(index2,carreau1);
-	}
-	
-	private boolean estResolu(ArrayList<Integer> damier) {
-		int nbCarreaux = damier.size();
-		if(damier.get(nbCarreaux-1)!=0) return false;
-		for(int i = 0; i < nbCarreaux - 2; i++) if(damier.get(i) != i+1) return false;
-		return true;
-	}
-	
-	private void profondeur(ArrayList<String> s, ArrayList<Integer> damier,String chemin){
-		for(int i=0;i<4;i++){
-			System.out.println("Tour "+i+": "+damier);
-			try{
-				if(this.estResolu(damier)){
-					s.add(chemin);
-					break;
-				}
-				else{
-					boolean bon=false;
-					if(chemin=="") bon=true;
-					else{
-						switch(chemin.charAt(chemin.length()-1)){
-							case '0':
-								bon=(i!=1);
-								break;
-							case '1':
-								bon=(i!=0);
-								break;
-							case '2':
-								bon=(i!=3);
-								break;
-							case '3':
-								bon=(i!=2);
-								break;
-						}
-					}
-					if(bon){
-						ArrayList<Integer> d=this.deplacementAuto(damier, i);
-						System.out.println("Après modif de la direction "+i+" : "+d);
-						this.profondeur(s, d, chemin+i);
-					}
-				}
-			}catch(ImpossibleMoveException e){
-				
-			}
-		}
-	}
-	
-	private ArrayList<Integer> clone(ArrayList<Integer> d){
-		ArrayList<Integer> damier=new ArrayList<Integer>();
-		for(int i=0;i<d.size();i++) damier.add(d.get(i));
-		return damier;
-	}
-	
-	public String resolution() throws NoCombinaisonException{
-		ArrayList<String> solutions=new ArrayList<String>();
-		try {
-			this.profondeur(solutions,damier, "");
-		}catch (StackOverflowError e) {
-			
-		} 
-		Collections.sort(solutions,new comparerList());
-		if(solutions.isEmpty()) throw new NoCombinaisonException("Erreur ! Pas de combinaison !");
-		else{
-			System.out.println("La liste des combinaisons possibles pour résoudre ce taquin : "+solutions);
-			return solutions.get(0);
-		}
-	}
-	
-	//---------------------------------------------------------------- METHODE 2 de parcours ------------------------------------------------------------------------
-	
 	public String methode2Resolution() throws NoCombinaisonException{
-		String solution="";
+		TreeSet<String> solutions=new TreeSet<String>();
 		try {
-			solution=this.parcours(solution, this.damier, this.taille, "");
+			this.parcoursProgressif(solutions, this.damier, this.taille, "", 10);
 		}catch (StackOverflowError e) {
 			
 		} catch (TabException e) {
 			System.out.println(e.getMessage());
-		} catch (ProblemePacours e) {
-			System.out.println(e.getMessage());
-		} 
-		if(solution=="") throw new NoCombinaisonException("Erreur ! Pas de combinaison !");
-		else{
-			return solution;
 		}
+		System.out.println(solutions);
+		if(solutions.isEmpty()) throw new NoCombinaisonException("Pas de solutions sur ce taquin !");
+		else return solutions.first();
 	}
-
-	private String parcours(String solution, ArrayList<Integer> damier, int taille, String chemin) throws TabException, ProblemePacours{
-		System.out.println("chemin :"+chemin);
-		System.out.println(damier);
-		//Cas de base je regarde si le taquin est résolu
-		Taquin p=new Taquin(taille,damier);
-		if(!p.estResolu()){
-			//Je parcours tout d'abord en largeur les 4 directions pour savoir s'il y a une solution
-			for(int i=0;i<4;i++){
-				Taquin t=new Taquin(taille,damier);
-				try {
-					t.deplacement(i);
-					// - S'il y en a bien une pas besoin de parcourir un autre noeud sur cette branche puisque ce chemin sera forcément plus petit
-					if(t.estResolu()){
-						return (chemin+ajouterDirection(i));
-					}
-				} catch (ImpossibleMoveException e) {
-					
-				}
-			}
-			// - S'il n'y en a pas je me lance sur une des 4 directions et je fais un parcours en profondeur
-			// Pour être le plus éfficace possible je fais la vérification dans le cas où j'ai déjà une solution:
-			//  - Si en effet il y en a une :
-			boolean plusLong=false;
-			if(solution!=""){
-				//Je regarde si cette solution n'est pas plus courte que le chemin où je m'aventure
-				plusLong=chemin.length()+1>=solution.length();
-			}
-			// si c'est le cas c'est inutile de continuer
-			if(!plusLong){
+	
+	public void parcoursProgressif(TreeSet<String> solutions, ArrayList<Integer> damier,int taille, String chemin,int profMannathan) throws TabException{
+		//La profondeur de mannathan va etre decrementer a chaque passage de noeud
+		if(profMannathan>0){
+			boolean cheminTrouver=false;
+			System.out.println("chemin :"+chemin+"\nSolution optimale trouver pour le moment : "+(solutions.isEmpty()?"aucune":solutions.first()));
+			System.out.println(damier);
+			//Cas de base je regarde si le taquin est resolu
+			Taquin p=new Taquin(taille,damier);
+			if(!p.estResolu()){
+				//Je parcours tout d'abord en largeur les 4 directions pour savoir s'il y a une solution
 				for(int i=0;i<4;i++){
+					Taquin t=new Taquin(taille,damier);
 					try {
-						//NB: ce que j'appelle ici redondance directe c'est par exemple le fait d'avoir fais haut le coup d'avantet que là je fasse bas
-						boolean redondanceDirecte=false;
-						if(chemin!=""){
-							switch(i){
-								case 0:
-									redondanceDirecte=(chemin.charAt(chemin.length()-1) == 'z');
-									break;
-								case 1:
-									redondanceDirecte=(chemin.charAt(chemin.length()-1) == 's');
-									break;
-								case 2:
-									redondanceDirecte=(chemin.charAt(chemin.length()-1) == 'q');
-									break;
-								case 3:
-									redondanceDirecte=(chemin.charAt(chemin.length()-1) == 'd');
-									break;
-							}
+						t.deplacement(i);
+						// - S'il y en a bien une pas besoin de parcourir un autre noeud sur cette branche puisque ce chemin sera forcement plus petit
+						if(t.estResolu()){
+							chemin+=ajouterDirection(i);
+							solutions.add(chemin);
+							cheminTrouver=true;
+							break;
 						}
-						// S'il n'y a pas de redondance directe je peux donc parcourir cette branche si c'est possible
-						if(!redondanceDirecte){
-							Taquin t=new Taquin(taille,damier);
-							t.deplacement(i);
-							return this.parcours(solution, t.damier, taille, chemin+this.ajouterDirection(i));
-						}
-					}catch (ImpossibleMoveException e) {
+					} catch (ImpossibleMoveException e) {
 						
 					}
 				}
-			}
+				// - S'il n'y en a pas je me lance sur une des 4 directions et je fais un parcours en profondeur
+				if(!cheminTrouver){
+					for(int i=0;i<4;i++){
+						try {
+							//NB: ce que j'appelle ici redondance directe c'est par exemple le fait d'avoir fais haut le coup d'avantet que là je fasse bas
+							boolean redondanceDirecte=false;
+							if(chemin!=""){
+								switch(i){
+									case 0:
+										redondanceDirecte=(chemin.charAt(chemin.length()-1) == 'z');
+										break;
+									case 1:
+										redondanceDirecte=(chemin.charAt(chemin.length()-1) == 's');
+										break;
+									case 2:
+										redondanceDirecte=(chemin.charAt(chemin.length()-1) == 'q');
+										break;
+									case 3:
+										redondanceDirecte=(chemin.charAt(chemin.length()-1) == 'd');
+										break;
+								}
+							}
+							// S'il n'y a pas de redondance directe je peux donc parcourir cette branche si c'est possible
+							if(!redondanceDirecte){
+								Taquin t=new Taquin(taille,damier);
+								t.deplacement(i);
+								this.parcoursProgressif(solutions, t.damier, taille, chemin+this.ajouterDirection(i), profMannathan-1);
+							}
+						}catch (ImpossibleMoveException e) {
+							
+						}
+					}
+				}
+			}	
 		}
-		throw new ProblemePacours("Il y a un problème sur le parcours !");
-		
 	}
-
+	
 	private String ajouterDirection(int i) throws TabException {
 		Iterator<Entry<Character, Integer>> it=this.tabCorrespondance.entrySet().iterator();
 		while(it.hasNext()){
