@@ -34,15 +34,13 @@ public class Taquin implements Jeu {
 				numero++;
 			}
 		}
-		do
-			melanger();
-		while (!estResolvable());
+		melanger();
 
 		// On initialise le tableau des correspondance
-		tabCorrespondance.put(new Character('z'), new Integer(1));
-		tabCorrespondance.put(new Character('s'), new Integer(0));
-		tabCorrespondance.put(new Character('q'), new Integer(3));
-		tabCorrespondance.put(new Character('d'), new Integer(2));
+		tabCorrespondance.put(new Character('z'), new Integer(0));
+		tabCorrespondance.put(new Character('s'), new Integer(1));
+		tabCorrespondance.put(new Character('q'), new Integer(2));
+		tabCorrespondance.put(new Character('d'), new Integer(3));
 
 	}
 	/**
@@ -73,16 +71,16 @@ public class Taquin implements Jeu {
 		int tADeplacer[]=getPositionCaseVide();
 		switch (direction) {
 		case 0:
-			tADeplacer[1]=vide[1]-1;
-			break;
-		case 1:
 			tADeplacer[1]=vide[1]+1;
 			break;
+		case 1:
+			tADeplacer[1]=vide[1]-1;
+			break;
 		case 2:
-			tADeplacer[0]=vide[0]-1;
+			tADeplacer[0]=vide[0]+1;
 			break;
 		case 3:
-			tADeplacer[0]=vide[0]+1;
+			tADeplacer[0]=vide[0]-1;
 			break;
 		}
 		inverser(vide, tADeplacer);
@@ -96,27 +94,26 @@ public class Taquin implements Jeu {
 	 * @return Un boolean true si la case blanche est au bord, false sinon
 	 */
 	public boolean estAuBord(int direction) {
-		int temp[]=new int[2];
-		temp=getPositionCaseVide();
+		int temp[]=getPositionCaseVide();
 		switch(direction){
 		case 0:
 			if(temp[1]==0)
-				return false;
+				return true;
 			break;
 		case 1:
 			if(temp[1]==damier[0].length-1)
-				return false;
+				return true;
 			break;
 		case 2:
 			if(temp[0]==0)
-				return false;			
+				return true;			
 			break;
 		case 3:
 			if(temp[0]==damier.length-1)
-				return false;			
+				return true;			
 			break;
 		}
-		return true;
+		return false;
 	}
 
 	/**
@@ -149,6 +146,7 @@ public class Taquin implements Jeu {
 	 */
 	public boolean estResolvable() {
 		int tPosVide[]=getPositionCaseVide();
+		System.out.println(tPosVide);
 		int pariteCaseVide=( ((largeur-1)-tPosVide[0]) + ((hauteur-1)-tPosVide[1])) %2;
 		
 		int pariteAutreCase=0;
@@ -191,23 +189,9 @@ public class Taquin implements Jeu {
 	 * @return Retourne la grille de jeu, permet de melanger successivement
 	 */
 	public int[][] melanger() {
-		int nbPermutation=10;
-		
-		int x, y, m, n;
-		
-		int borneXMax=largeur-1;
-		int borneYMax=hauteur-1;
-		
-		for(int i=0; i<nbPermutation;i++){
-			System.out.println("On effectue une permutation");
-			x=(int) (Math.random() * borneXMax);
-			y=(int) (Math.random() * borneYMax);
-			int a[]={x,y};
-			n=(int) (Math.random() * borneXMax);
-			m=(int) (Math.random() * borneYMax);
-			int b[]={n,m};
-			inverser(a,b);
-		}
+		try {
+			deplacement((int) Math.random()*4);
+		} catch (ImpossibleMoveException e) {}
 		return this.damier;
 	}
 
@@ -258,7 +242,7 @@ public class Taquin implements Jeu {
 	 */
 	public int[] getPositionCaseVide(){
 		for(int i=0; i<largeur;i++){
-			for(int j=0; i<hauteur; i++){
+			for(int j=0; j<hauteur; j++){
 				if (damier[i][j]==0){
 					return new int[]{i,j};
 				}
