@@ -185,7 +185,7 @@ public class Taquin implements Jeu {
 	public String methode2Resolution() throws NoCombinaisonException{
 		TreeSet<String> solutions=new TreeSet<String>();
 		try {
-			this.parcoursProgressif(solutions, this.damier, this.taille, "", 10);
+			this.parcoursProgressif(solutions, this.damier, this.taille, "", 25);
 		}catch (StackOverflowError e) {
 			
 		} catch (TabException e) {
@@ -199,62 +199,68 @@ public class Taquin implements Jeu {
 	public void parcoursProgressif(TreeSet<String> solutions, ArrayList<Integer> damier,int taille, String chemin,int profMannathan) throws TabException{
 		//La profondeur de mannathan va etre decrementer a chaque passage de noeud
 		if(profMannathan>0){
-			boolean cheminTrouver=false;
-			System.out.println("chemin :"+chemin+"\nSolution optimale trouver pour le moment : "+(solutions.isEmpty()?"aucune":solutions.first()));
-			System.out.println(damier);
-			//Cas de base je regarde si le taquin est resolu
-			Taquin p=new Taquin(taille,damier);
-			if(!p.estResolu()){
-				//Je parcours tout d'abord en largeur les 4 directions pour savoir s'il y a une solution
-				for(int i=0;i<4;i++){
-					Taquin t=new Taquin(taille,damier);
-					try {
-						t.deplacement(i);
-						// - S'il y en a bien une pas besoin de parcourir un autre noeud sur cette branche puisque ce chemin sera forcement plus petit
-						if(t.estResolu()){
-							chemin+=ajouterDirection(i);
-							solutions.add(chemin);
-							cheminTrouver=true;
-							break;
-						}
-					} catch (ImpossibleMoveException e) {
-						
-					}
-				}
-				// - S'il n'y en a pas je me lance sur une des 4 directions et je fais un parcours en profondeur
-				if(!cheminTrouver){
+			boolean plusGrand=false;
+			if(!solutions.isEmpty()){
+				plusGrand=solutions.first().length()<=chemin.length();
+			}
+			if(!plusGrand){
+				boolean cheminTrouver=false;
+				System.out.println("chemin :"+chemin+"\nSolution optimale trouver pour le moment : "+(solutions.isEmpty()?"aucune":solutions.first()));
+				System.out.println(damier);
+				//Cas de base je regarde si le taquin est resolu
+				Taquin p=new Taquin(taille,damier);
+				if(!p.estResolu()){
+					//Je parcours tout d'abord en largeur les 4 directions pour savoir s'il y a une solution
 					for(int i=0;i<4;i++){
+						Taquin t=new Taquin(taille,damier);
 						try {
-							//NB: ce que j'appelle ici redondance directe c'est par exemple le fait d'avoir fais haut le coup d'avantet que là je fasse bas
-							boolean redondanceDirecte=false;
-							if(chemin!=""){
-								switch(i){
-									case 0:
-										redondanceDirecte=(chemin.charAt(chemin.length()-1) == 'z');
-										break;
-									case 1:
-										redondanceDirecte=(chemin.charAt(chemin.length()-1) == 's');
-										break;
-									case 2:
-										redondanceDirecte=(chemin.charAt(chemin.length()-1) == 'q');
-										break;
-									case 3:
-										redondanceDirecte=(chemin.charAt(chemin.length()-1) == 'd');
-										break;
-								}
+							t.deplacement(i);
+							// - S'il y en a bien une pas besoin de parcourir un autre noeud sur cette branche puisque ce chemin sera forcement plus petit
+							if(t.estResolu()){
+								chemin+=ajouterDirection(i);
+								solutions.add(chemin);
+								cheminTrouver=true;
+								break;
 							}
-							// S'il n'y a pas de redondance directe je peux donc parcourir cette branche si c'est possible
-							if(!redondanceDirecte){
-								Taquin t=new Taquin(taille,damier);
-								t.deplacement(i);
-								this.parcoursProgressif(solutions, t.damier, taille, chemin+this.ajouterDirection(i), profMannathan-1);
-							}
-						}catch (ImpossibleMoveException e) {
+						} catch (ImpossibleMoveException e) {
 							
 						}
 					}
-				}
-			}	
+					// - S'il n'y en a pas je me lance sur une des 4 directions et je fais un parcours en profondeur
+					if(!cheminTrouver){
+						for(int i=0;i<4;i++){
+							try {
+								//NB: ce que j'appelle ici redondance directe c'est par exemple le fait d'avoir fais haut le coup d'avantet que là je fasse bas
+								boolean redondanceDirecte=false;
+								if(chemin!=""){
+									switch(i){
+										case 0:
+											redondanceDirecte=(chemin.charAt(chemin.length()-1) == 'z');
+											break;
+										case 1:
+											redondanceDirecte=(chemin.charAt(chemin.length()-1) == 's');
+											break;
+										case 2:
+											redondanceDirecte=(chemin.charAt(chemin.length()-1) == 'q');
+											break;
+										case 3:
+											redondanceDirecte=(chemin.charAt(chemin.length()-1) == 'd');
+											break;
+									}
+								}
+								// S'il n'y a pas de redondance directe je peux donc parcourir cette branche si c'est possible
+								if(!redondanceDirecte){
+									Taquin t=new Taquin(taille,damier);
+									t.deplacement(i);
+									this.parcoursProgressif(solutions, t.damier, taille, chemin+this.ajouterDirection(i), profMannathan-1);
+								}
+							}catch (ImpossibleMoveException e) {
+								
+							}
+						}
+					}
+				}	
+			}
 		}
 	}
 	
