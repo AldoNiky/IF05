@@ -2,7 +2,6 @@ package jeu;
 
 import java.util.*;
 
-import exception.ImpossibleMoveException;
 
 public class Taquin implements Jeu {
 	
@@ -26,26 +25,29 @@ public class Taquin implements Jeu {
 		this.damier= new int[longueur][hauteur];
 		this.damierFin= new HashMap<Integer, Integer[]>();
 		
-		int numero=0;
+		int numero=1;
 		for(int i=0; i<longueur;i++){
 			for(int j=0; j<hauteur; j++){
-				damier[i][j]=numero;
 				int indiceFin=0;
-				if(i!=longueur-1 || j!=hauteur-1) indiceFin=numero+1;
+				if(i!=longueur-1 || j!=hauteur-1){
+					indiceFin=numero;
+					damier[i][j]=numero;
+				}else damier[i][j]=0;
 				Integer[]t={i,j};
 				damierFin.put(indiceFin, t);
 				numero++;
 			}
 		}
-		do
+
+		for(int i=0; i<90; i++)
 			melanger();
-		while (!estResolvable());
+		
 
 		// On initialise le tableau des correspondance
-		tabCorrespondance.put(new Character('z'), new Integer(1));
-		tabCorrespondance.put(new Character('s'), new Integer(0));
-		tabCorrespondance.put(new Character('q'), new Integer(3));
-		tabCorrespondance.put(new Character('d'), new Integer(2));
+		tabCorrespondance.put(new Character('z'), new Integer(0));
+		tabCorrespondance.put(new Character('s'), new Integer(1));
+		tabCorrespondance.put(new Character('q'), new Integer(2));
+		tabCorrespondance.put(new Character('d'), new Integer(3));
 
 	}
 	/**
@@ -54,22 +56,11 @@ public class Taquin implements Jeu {
 	 * @return Retourne la grille de jeu, permet de melanger successivement
 	 */
 	public int[][] melanger() {
-		int nbPermutation=10;
-		
-		int x, y, m, n;
-		
-		int borneXMax=longueur-1;
-		int borneYMax=hauteur-1;
-		
-		for(int i=0; i<nbPermutation;i++){
-			x=(int) (Math.random() * borneXMax);
-			y=(int) (Math.random() * borneYMax);
-			int a[]={x,y};
-			n=(int) (Math.random() * borneXMax);
-			m=(int) (Math.random() * borneYMax);
-			int b[]={n,m};
-			inverser(a,b);
-		}
+		try{
+			int entier=(int) (Math.random() * 4);
+			deplacement(entier);
+			//System.out.println(entier);
+		}catch(IndexOutOfBoundsException e){}
 		return this.damier;
 	}
 	/**
@@ -91,8 +82,8 @@ public class Taquin implements Jeu {
 	 * @return Un boolean true si le jeu est resolue, false sinon
 	 */
 	public boolean estResolu() {
-		for(int i=0; i<this.longueur;i++){
-			for(int j=0; j<this.hauteur-1;j++){
+		for(int i=0; i<damier.length;i++){
+			for(int j=0; j<damier[0].length-1;j++){
 				Integer[] t=damierFin.get(damier[i][j]);
 				if(t[0]!=i || t[1]!=j)
 					return false;
@@ -202,8 +193,32 @@ public class Taquin implements Jeu {
 	/**
 	 * 
 	 */
-	public void deplacement(int direction) throws ImpossibleMoveException {
-		
+	public void deplacement(int direction) throws IndexOutOfBoundsException{
+		int temp[]=indexOf(0);
+		//System.out.println(temp);
+		int valADeplacer;
+		switch(direction){
+		case 0:
+			valADeplacer=damier[temp[0]-1][temp[1]];
+			damier[temp[0]-1][temp[1]]=0;
+			damier[temp[0]][temp[1]]=valADeplacer;
+			break;
+		case 1:
+			valADeplacer=damier[temp[0]+1][temp[1]];
+			damier[temp[0]+1][temp[1]]=0;
+			damier[temp[0]][temp[1]]=valADeplacer;
+			break;
+		case 2:
+			valADeplacer=damier[temp[0]][temp[1]-1];
+			damier[temp[0]][temp[1]-1]=0;
+			damier[temp[0]][temp[1]]=valADeplacer;
+			break;
+		case 3:
+			valADeplacer=damier[temp[0]][temp[1]+1];
+			damier[temp[0]][temp[1]+1]=0;
+			damier[temp[0]][temp[1]]=valADeplacer;
+			break;
+		}
 	}
 
 }

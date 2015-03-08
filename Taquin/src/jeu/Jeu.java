@@ -2,7 +2,6 @@ package jeu;
 
 import java.util.*;
 
-import exception.ImpossibleMoveException;
 
 
 public interface Jeu {
@@ -13,7 +12,7 @@ public interface Jeu {
 	 * @throws ImpossibleMoveException
 	 * Une exception est leve si le deplacement est impossible
 	 */
-	public void deplacement(int direction) throws ImpossibleMoveException;
+	public void deplacement(int direction) throws IndexOutOfBoundsException;
 	/**
 	 * Affiche le jeu
 	 * @return

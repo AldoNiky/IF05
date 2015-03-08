@@ -5,7 +5,6 @@ import java.io.PrintStream;
 import java.util.Scanner;
 import java.util.Stack;
 
-import exception.ImpossibleMoveException;
 
 import jeu.Jeu;
 import jeu.Taquin;
@@ -17,7 +16,11 @@ public class Test {
 		// Un jeu
 //		Taquin t = new Taquin(Integer.parseInt(args[0]),
 //				Integer.parseInt(args[1]));
-		Taquin t = new Taquin(3,3);
+		Taquin t = new Taquin(5,4);
+/*		for(int i=0; i<t.damierFin.size(); i++){
+			Integer[] d= t.damierFin.get(i);
+			System.out.println("coordonées de "+i+"("+d[0]+","+d[1]+")");
+		}*/
 		// Un flux de sortie
 		PrintStream pSortie = System.out;
 		// On lance la partie
@@ -60,7 +63,7 @@ public class Test {
 				pSortie.println((char) Event.ESCAPE + "8");
 				// Et on reecrit le jeu par dessus l'ancien
 				pSortie.println(pJeu);
-			} catch (ImpossibleMoveException err) {
+			} catch (IndexOutOfBoundsException err) {
 				pSortie.print(err.getMessage());
 			}
 		}
