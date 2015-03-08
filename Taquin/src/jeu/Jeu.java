@@ -1,7 +1,6 @@
 package jeu;
 
-import java.util.Stack;
-import java.util.TreeMap;
+import java.util.*;
 
 import exception.ImpossibleMoveException;
 
@@ -33,25 +32,6 @@ public interface Jeu {
 	 * Retourne une map
 	 */
 	public TreeMap<Character, Integer> getTabCorrespondance();
-	/**
-	 * Permet d'excuter une serie de coups
-	 * <p>
-	 * Cette methode execute une serie de coups sur un jeu puis renvoie la situation obtenue, les coups effectuer sont 
-	 * ensuite annule
-	 * </p>
-	 * @param pSerieCoups
-	 * La serie de coups a executer
-	 */
-	public void executeSerieCoups(Stack<Integer> pSerieCoups);
-	/**
-	 * Execute la serie de coups inverse de celle qui est passe en parametre
-	 * <p>
-	 * Permet d'annuler une serie de coups
-	 * </p>
-	 * @param pSerieCoups
-	 * La serie de coups a annule
-	 */
-	public void executeSerieCoupsInverse(Stack<Integer> pSerieCoups);
 	/**
 	 * Estime le nombre de coups pour arriver a une solution
 	 * @return
