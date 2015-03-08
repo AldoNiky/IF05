@@ -16,7 +16,9 @@ public class Test {
 		// Un jeu
 //		Taquin t = new Taquin(Integer.parseInt(args[0]),
 //				Integer.parseInt(args[1]));
-		Taquin t = new Taquin(5,4);
+		Taquin t = new Taquin(3,3);
+		System.out.println("La distance de Mannathan est de :"+t.distanceManhattan());
+		System.out.println("La nombre de permut est de :"+t.nbPermutFin());
 /*		for(int i=0; i<t.damierFin.size(); i++){
 			Integer[] d= t.damierFin.get(i);
 			System.out.println("coordonées de "+i+"("+d[0]+","+d[1]+")");
@@ -64,7 +66,6 @@ public class Test {
 				// Et on reecrit le jeu par dessus l'ancien
 				pSortie.println(pJeu);
 			} catch (IndexOutOfBoundsException err) {
-				pSortie.print(err.getMessage());
 			}
 		}
 		// On revient au debut

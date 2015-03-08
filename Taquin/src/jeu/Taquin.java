@@ -130,7 +130,7 @@ public class Taquin implements Jeu {
 	 * 
 	 * @return
 	 */
-	private int nbPermutFin(){
+	public int nbPermutFin(){
 		int[][] ini=this.clone();
 		int indice=0,permut=0;
 		while(!this.estResolu()){
