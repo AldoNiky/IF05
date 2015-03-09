@@ -284,6 +284,7 @@ public class Taquin implements Jeu {
 		int[][] ini =this.clone();
 		//On utilise un indice pour suivre l'evolution de la case courante (aPlacer)
 		int numero=1;
+		
 		//On boucle sur toutes les lignes de la grille en laissant les deux dernieres
 		for(int i=0;i<damier.length-2;i++){
 			//On sort l'indice pour l'utiliser pour le placement de la derniere case de la ligne
@@ -312,6 +313,26 @@ public class Taquin implements Jeu {
 			//Deux déplacements
 			deplacement(3);
 			deplacement(1);
+		}
+		
+		//On boucle sur les colonnes en laissant les 2 dernieres
+		for(int j=0; j< damier[0].length-2; j++){
+			int i;
+			for(i=0; i<damier.length; i++){
+				placementCase(i,j+1,numero);
+				placementCase(i,j,0);
+				deplacement(3);
+				numero++;
+			}
+			i++;
+			placementCase(i,j+2,numero);
+			placementCase(i,j+1,numero);
+			placementCase(i,j,0);
+			deplacement(3);
+			deplacement(3);
+			placementCase(i-1,j,0);
+			deplacement(1);
+			deplacement(3);
 		}
 		this.setDamier(ini);
 	}
