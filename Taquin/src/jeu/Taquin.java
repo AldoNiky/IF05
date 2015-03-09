@@ -12,7 +12,7 @@ public class Taquin implements Jeu {
 	private TreeMap<Character, Integer> tabCorrespondance = new TreeMap<Character, Integer>();
 	private int hauteur;
 	private int longueur;
-	
+	private String deplacementEffectué="";
 
 	/**
 	 * Constructeur d'un Taquin
@@ -267,12 +267,18 @@ public class Taquin implements Jeu {
 		valADeplacer=damier[x][y];
 		damier[x][y]=0;
 		damier[temp[0]][temp[1]]=valADeplacer;
+		if(direction%2==0){
+			if(direction==0) deplacementEffectué+="H";
+			deplacementEffectué+="G";
+		}else{
+			if(direction==1) deplacementEffectué+="B";
+			deplacementEffectué+="D";			
+		}
 	}
 	/**
 	 * 
 	 */
-	public String resolutionA(){
-		String chemin="";
+	public void resolutionA(){
 		int[][] ini =this.clone();
 		int numero=1;
 		for(int i=0;i<damier.length-2;i++){
@@ -281,7 +287,6 @@ public class Taquin implements Jeu {
 			}
 		}
 		this.setDamier(ini);
-		return chemin;
 	}
 	/**
 	 * 
