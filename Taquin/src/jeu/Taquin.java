@@ -59,7 +59,6 @@ public class Taquin implements Jeu {
 		try{
 			int entier=(int) (Math.random() * 4);
 			deplacement(entier);
-			//System.out.println(entier);
 		}catch(IndexOutOfBoundsException e){}
 		return this.damier;
 	}
@@ -195,30 +194,49 @@ public class Taquin implements Jeu {
 	 */
 	public void deplacement(int direction) throws IndexOutOfBoundsException{
 		int temp[]=indexOf(0);
-		//System.out.println(temp);
-		int valADeplacer;
+		int valADeplacer, x=temp[0],y=temp[1];
 		switch(direction){
 		case 0:
-			valADeplacer=damier[temp[0]-1][temp[1]];
-			damier[temp[0]-1][temp[1]]=0;
-			damier[temp[0]][temp[1]]=valADeplacer;
+			x-=1;
 			break;
 		case 1:
-			valADeplacer=damier[temp[0]+1][temp[1]];
-			damier[temp[0]+1][temp[1]]=0;
-			damier[temp[0]][temp[1]]=valADeplacer;
+			x+=1;
 			break;
 		case 2:
-			valADeplacer=damier[temp[0]][temp[1]-1];
-			damier[temp[0]][temp[1]-1]=0;
-			damier[temp[0]][temp[1]]=valADeplacer;
+			y-=1;
 			break;
 		case 3:
-			valADeplacer=damier[temp[0]][temp[1]+1];
-			damier[temp[0]][temp[1]+1]=0;
-			damier[temp[0]][temp[1]]=valADeplacer;
+			y+=1;
 			break;
 		}
+		valADeplacer=damier[x][y];
+		damier[x][y]=0;
+		damier[temp[0]][temp[1]]=valADeplacer;
 	}
-
+	/**
+	 * 
+	 */
+	public String resolutionA(){
+		String chemin="";
+		int[][] ini =this.clone();
+		int numero=1;
+		for(int i=0;i<damier.length-2;i++){
+			for(int j=0;j<damier[0].length-1;j++){
+				placementCase(i, j, numero);
+			}
+		}
+		this.setDamier(ini);
+		return chemin;
+	}
+	/**
+	 * 
+	 */
+	private void placementCase(int i, int j, int num){
+		Integer[] t=damierFin.get(num);
+		//Je regarde si 
+		if(t[0]!=i || t[1]!=j){
+			
+		}
+	}
+	
 }
