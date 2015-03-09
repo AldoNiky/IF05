@@ -1,15 +1,18 @@
 package jeu;
 
 import java.util.*;
+import java.io.*;
 
+import exceptions.*;
 
 public class Taquin implements Jeu {
 	
 	private int[][] damier;
-	public HashMap<Integer, Integer[]> damierFin;
+	public HashMap<Integer, Integer[]> damierFin = new HashMap<Integer, Integer[]>();
 	private TreeMap<Character, Integer> tabCorrespondance = new TreeMap<Character, Integer>();
 	private int hauteur;
 	private int longueur;
+	
 
 	/**
 	 * Constructeur d'un Taquin
@@ -23,7 +26,6 @@ public class Taquin implements Jeu {
 		this.hauteur = pHauteur;
 		this.longueur = pLongueur;
 		this.damier= new int[longueur][hauteur];
-		this.damierFin= new HashMap<Integer, Integer[]>();
 		
 		int numero=1;
 		for(int i=0; i<longueur;i++){
@@ -44,12 +46,54 @@ public class Taquin implements Jeu {
 		
 
 		// On initialise le tableau des correspondance
-		tabCorrespondance.put(new Character('z'), new Integer(0));
-		tabCorrespondance.put(new Character('s'), new Integer(1));
-		tabCorrespondance.put(new Character('q'), new Integer(2));
-		tabCorrespondance.put(new Character('d'), new Integer(3));
+		tabCorrespondance.put(new Character('z'), new Integer(1));
+		tabCorrespondance.put(new Character('s'), new Integer(0));
+		tabCorrespondance.put(new Character('q'), new Integer(3));
+		tabCorrespondance.put(new Character('d'), new Integer(2));
 
 	}
+	
+	private void initialiseDamierFin(){
+		int numero=1;
+		for(int i=0; i<longueur;i++){
+			for(int j=0; j<hauteur; j++){
+				int indiceFin=0;
+				if(i!=longueur-1 || j!=hauteur-1) indiceFin=numero;
+				Integer[]t={i,j};
+				damierFin.put(indiceFin, t);
+			}
+		}
+		
+	}
+	
+	public Taquin(String pNomFichier) throws FileNotFoundException{
+		String filePath = "fichiersTaquin/"+pNomFichier;
+		BufferedReader bf = new BufferedReader(new FileReader(filePath));
+		StringTokenizer line;
+		try {
+			line = new StringTokenizer(bf.readLine());
+			hauteur = Integer.parseInt(line.nextToken());
+			line = new StringTokenizer(bf.readLine());
+			longueur = Integer.parseInt(line.nextToken());
+			initialiseDamierFin();
+			damier= new int [hauteur][longueur];
+			for(int i=0; i<hauteur; i++){
+				line = new StringTokenizer(bf.readLine());
+				for(int j=0; j<longueur; j++)
+					damier[i][j]=Integer.parseInt(line.nextToken());
+			}
+		} catch (IOException e) {
+			System.out.println("Erreur : "+ e.toString());
+		}
+		// On initialise le tableau des correspondance
+		tabCorrespondance.put(new Character('z'), new Integer(1));
+		tabCorrespondance.put(new Character('s'), new Integer(0));
+		tabCorrespondance.put(new Character('q'), new Integer(3));
+		tabCorrespondance.put(new Character('d'), new Integer(2));
+
+	}
+	
+	
 	/**
 	 * Melange la grille de jeu
 	 * 
@@ -84,8 +128,7 @@ public class Taquin implements Jeu {
 		for(int i=0; i<damier.length;i++){
 			for(int j=0; j<damier[0].length-1;j++){
 				Integer[] t=damierFin.get(damier[i][j]);
-				if(t[0]!=i || t[1]!=j)
-					return false;
+				if(t[0]!=i || t[1]!=j) return false;
 			}
 		}
 		return true;
