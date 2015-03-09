@@ -274,17 +274,44 @@ public class Taquin implements Jeu {
 			if(direction==1) deplacementEffectué+="B";
 			deplacementEffectué+="D";			
 		}
+
 	}
 	/**
 	 * 
 	 */
 	public void resolutionA(){
+		//On garde de cote le taquin de départ
 		int[][] ini =this.clone();
+		//On utilise un indice pour suivre l'evolution de la case courante (aPlacer)
 		int numero=1;
+		//On boucle sur toutes les lignes de la grille en laissant les deux dernieres
 		for(int i=0;i<damier.length-2;i++){
-			for(int j=0;j<damier[0].length-1;j++){
-				placementCase(i, j, numero);
+			//On sort l'indice pour l'utiliser pour le placement de la derniere case de la ligne
+			int j;
+			//On boucle sur tout les cases de la ligne ormis la derniere
+			for(j=0;j<damier[0].length-1;j++){
+				//On place la case courante en dessous de sa position finale
+				placementCase(i-1, j, numero);
+				//On glisse vers le haut
+				deplacement(1);
+				//On passe a la case suivante
+				numero++;
 			}
+			j++;
+			//On place la derniere case de la ligne 2 position en dessous de la position finale
+			placementCase(i-2,j,numero);
+			//Ramene la case precedement place au dessus de la case courante
+			placementCase(i-1,j,numero);
+			//Ramene la case blanche
+			placementCase(i,j,0);
+			//On glisse deux fois vers le haut
+			deplacement(1);
+			deplacement(1);
+			//Ramener la case blanche
+			placementCase(i,j-1,0);
+			//Deux déplacements
+			deplacement(3);
+			deplacement(1);
 		}
 		this.setDamier(ini);
 	}
