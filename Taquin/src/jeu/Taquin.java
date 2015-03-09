@@ -45,7 +45,7 @@ public class Taquin implements Jeu {
 			melanger();
 		
 
-		// On initialise le tableau des correspondance
+		// On initialise le tableau des correspondances
 		tabCorrespondance.put(new Character('z'), new Integer(1));
 		tabCorrespondance.put(new Character('s'), new Integer(0));
 		tabCorrespondance.put(new Character('q'), new Integer(3));
@@ -54,34 +54,45 @@ public class Taquin implements Jeu {
 	}
 	
 	private void initialiseDamierFin(){
+		//Recup du code a jiji du premier constructeur
 		int numero=1;
 		for(int i=0; i<longueur;i++){
 			for(int j=0; j<hauteur; j++){
 				int indiceFin=0;
 				if(i!=longueur-1 || j!=hauteur-1) indiceFin=numero;
 				Integer[]t={i,j};
+//				System.out.println("On ajoute pour l'indice "+ indiceFin+" la position finale "+i+";"+j);
 				damierFin.put(indiceFin, t);
+				numero++;
 			}
 		}
 		
 	}
 	
 	public Taquin(String pNomFichier) throws FileNotFoundException{
+		//On complete le chemin d'acces au fichier
 		String filePath = "fichiersTaquin/"+pNomFichier;
+		//... Petit buffer pour la lecture
 		BufferedReader bf = new BufferedReader(new FileReader(filePath));
 		StringTokenizer line;
 		try {
+			//Pas tres propre mais on recupere la hauteur et la largeur
 			line = new StringTokenizer(bf.readLine());
 			hauteur = Integer.parseInt(line.nextToken());
 			line = new StringTokenizer(bf.readLine());
 			longueur = Integer.parseInt(line.nextToken());
+			
+			//On initialise la position finale qu'auront les cases
 			initialiseDamierFin();
+			
+			//On initialise le damier avec les valeurs recuperes
 			damier= new int [hauteur][longueur];
 			for(int i=0; i<hauteur; i++){
 				line = new StringTokenizer(bf.readLine());
 				for(int j=0; j<longueur; j++)
 					damier[i][j]=Integer.parseInt(line.nextToken());
 			}
+		//On catch une IOException pour les erreurs d'ecriture
 		} catch (IOException e) {
 			System.out.println("Erreur : "+ e.toString());
 		}
@@ -128,6 +139,7 @@ public class Taquin implements Jeu {
 		for(int i=0; i<damier.length;i++){
 			for(int j=0; j<damier[0].length-1;j++){
 				Integer[] t=damierFin.get(damier[i][j]);
+//				System.out.println(damier[i][j]+";"+t[0]+";"+t[1]);
 				if(t[0]!=i || t[1]!=j) return false;
 			}
 		}
