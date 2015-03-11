@@ -339,12 +339,63 @@ public class Taquin implements Jeu {
 	/**
 	 * 
 	 */
-	private void placementCase(int i, int j, int num){
-		Integer[] t=damierFin.get(num);
-		//Je regarde si 
-		if(t[0]!=i || t[1]!=j){
+	private void placementCase(int iFinal, int jFinal, int num){
+		//On peut deplacer soit la case vide soit une autre case
+		
+		//On enregistre la position de la case a déplacer
+		int iDepart = indexOf(num)[0];
+		int jDepart = indexOf(num)[1];
+		
+		//On regarde la distance en i et en j
+		int decalageVertical = iFinal -iDepart;
+		int decalageHorizontal = jFinal -jDepart;
+		
+		//On traite dans un premier cas le déplacement de la case blanche
+		if(num==0){
+			//On traite le decalage vertical
+			if(decalageVertical!=0){
+				if(decalageVertical<0){
+					for(int i=0; i<decalageVertical;i++)
+						deplacement(0);
+				}else{
+					for(int i=0; i<decalageVertical;i++)
+						deplacement(1);
+				}
+			}
+			//On traite le decalage horizontal
+			if(decalageHorizontal!=0){
+				if(decalageHorizontal<0){
+					for(int i=0; i<decalageHorizontal;i++)
+						deplacement(3);
+				}else{
+					for(int i=0; i<decalageHorizontal;i++)
+						deplacement(2);	
+				}
+			}
+		}else{
 			
 		}
+		
 	}
 	
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
