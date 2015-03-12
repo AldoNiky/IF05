@@ -31,10 +31,6 @@ public interface Jeu {
 	 * Retourne une map
 	 */
 	public TreeMap<Character, Integer> getTabCorrespondance();
-	/**
-	 * Estime le nombre de coups pour arriver a une solution
-	 * @return
-	 * Renvoie un entier estimant le nombre de coups minimal a effectuer avant d'arriver a une solution
-	 */
-	public int distanceManhattan();
+	
+	public String getDeplacementEFfectue();
 }

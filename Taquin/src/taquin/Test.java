@@ -77,7 +77,7 @@ public class Test {
 		pSortie.println((char) Event.ESCAPE + "8");
 		pSortie.println(pJeu);
 		pSortie.println("Bravo vous avez gagne");
-		pSortie.println("Voici la liste des mouvements effectues : " + deplacements);
+		pSortie.println("Voici la liste des mouvements effectues : " + pJeu.getDeplacementEFfectue());
 	}
 
 	/**
