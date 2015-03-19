@@ -2,18 +2,20 @@ package algo;
 
 import java.util.*;
 
+import comparateurs.ComparatorManhattan;
+
+import jeu.Damier;
 import jeu.Sommet;
 
 public class Tas implements EnsembleATraiter {
-	private ArrayList<Sommet> tas;
+	private PriorityQueue<Damier> file;
 	
 	public Tas(){
-		tas= new ArrayList<Sommet>();
+		file=new PriorityQueue<Damier>(new ComparatorManhattan());
 	}
 	
-	@Override
 	public boolean nonVide() {
-		return tas.isEmpty();
+		return file.isEmpty();
 	}
 
 	@Override

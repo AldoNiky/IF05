@@ -90,7 +90,7 @@ public class Damier{
 		return permut;
 	}
 	
-	public void deplacement(int direction) throws IndexOutOfBoundsException{
+	public Damier deplacement(int direction) throws IndexOutOfBoundsException{
 		int temp[]=indexOf(0);
 		int valADeplacer, x=temp[0],y=temp[1];
 		switch(direction){
@@ -119,5 +119,5 @@ public class Damier{
 		}
 
 	}
-
+	return this;
 }
