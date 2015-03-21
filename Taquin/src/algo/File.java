@@ -14,26 +14,22 @@ public class File implements EnsembleATraiter{
 	
 	@Override
 	public boolean nonVide() {
-		// TODO Auto-generated method stub
-		return false;
+		return !file.isEmpty();
 	}
 
 	@Override
 	public Sommet prend() {
-		// TODO Auto-generated method stub
-		return null;
+		return file.remove(0);
 	}
 
 	@Override
 	public boolean appartient(Sommet p) {
-		// TODO Auto-generated method stub
-		return false;
+		return file.contains(p);
 	}
 
 	@Override
 	public boolean ajout(Sommet p) {
-		// TODO Auto-generated method stub
-		return false;
+		return file.add(p);
 	}
 
 }

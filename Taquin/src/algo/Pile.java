@@ -4,12 +4,12 @@ import jeu.Sommet;
 import java.util.*;
 
 public class Pile implements EnsembleATraiter{
-	private ArrayList<Sommet> pile;
+	private Stack<Sommet> pile;
 	
 	public Pile(){
-		pile=new ArrayList<Sommet>();
+		pile=new Stack<Sommet>();
 	}
-	@Override
+
 	/**
 	 * Permet de savoir si la pile est vide ou non
 	 */
@@ -21,9 +21,7 @@ public class Pile implements EnsembleATraiter{
 	 * Renvoie le sommet de la pile
 	 */
 	public Sommet prend() {
-		Sommet aRendre = pile.get(0);
-		pile.remove(0);
-		return aRendre;
+		return pile.pop();
 	}
 
 	/**

@@ -2,37 +2,42 @@ package algo;
 
 import java.util.*;
 
-import comparateurs.ComparatorManhattan;
+import comparateurs.*;
 
-import jeu.Damier;
-import jeu.Sommet;
+import jeu.*;
 
 public class Tas implements EnsembleATraiter {
-	private PriorityQueue<Damier> file;
+	private PriorityQueue<Sommet> file;
 	
-	public Tas(){
-		file=new PriorityQueue<Damier>(new ComparatorManhattan());
+	public Tas(int pComp){
+		Comparator c;
+		switch(pComp){
+		case 1:
+			c = new ComparatorManhattan();
+			break;
+		case 2:
+			c = new ComparatorManhattanProfondeur();
+		default :
+			c = new ComparatorManhattan();
+			break;
+		}
+		file=new PriorityQueue<Sommet>(c);
 	}
 	
 	public boolean nonVide() {
 		return file.isEmpty();
 	}
 
-	@Override
 	public Sommet prend() {
-		return null;
+		return file.peek();
 	}
 
-	@Override
 	public boolean appartient(Sommet p) {
-		// TODO Auto-generated method stub
-		return false;
+		return file.contains(p);
 	}
 
-	@Override
 	public boolean ajout(Sommet p) {
-		// TODO Auto-generated method stub
-		return false;
+		return file.add(p);
 	}
 
 }

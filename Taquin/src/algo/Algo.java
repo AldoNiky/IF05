@@ -18,14 +18,15 @@ public class Algo{
 			aTraiter=new File();
 			break;
 		case "Tas":
-			aTraiter=new Tas();
+			int typeComp=1;
+			aTraiter=new Tas(typeComp);
 			break;
 		}
 	}
 	
 	public void run(){
 		marque.add(this.initial);
-		Sommet succ[]=initial.succ();
+		ArrayList<Sommet> succ=initial.succ();
 		for(Sommet p : succ)
 			aTraiter.ajout(p);
 		while(aTraiter.nonVide()){

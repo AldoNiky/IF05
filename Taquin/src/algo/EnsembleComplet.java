@@ -1,17 +1,18 @@
 package algo;
 
-import java.util.HashMap;
+import java.util.*;
 
-import jeu.Damier;
-import jeu.Sommet;
+import jeu.*;
 
 public class EnsembleComplet implements EnsembleMarque {
-	private HashMap<Damier,Sommet> ensemble;
+	private ArrayList<Sommet> ensemble;
 
-	@Override
-	public void ajout(Damier pDam) {
-		// TODO Auto-generated method stub
-		
+	public void ajout(Sommet pSommmet) {
+		ensemble.add(pSommmet);		
+	}
+
+	public boolean appartient(Sommet pATester) {
+		return ensemble.contains(pATester);
 	}
 
 }

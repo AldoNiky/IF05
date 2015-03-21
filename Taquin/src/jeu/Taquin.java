@@ -230,6 +230,13 @@ public class Taquin implements Jeu {
 	public String getDeplacementEFfectue() {
 		return this.deplacementEffectue;
 	}
+
+
+	@Override
+	public void deplacement(int direction) throws IndexOutOfBoundsException {
+		// TODO Auto-generated method stub
+		
+	}
 	
 }
 

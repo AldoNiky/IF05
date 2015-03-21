@@ -16,9 +16,7 @@ public class Test {
 //		Taquin t = new Taquin(Integer.parseInt(args[0]),
 //				Integer.parseInt(args[1]));
 		Taquin t;
-		try {
-			t = new Taquin("taquin1.taq");
-			//t = new Taquin(3,3);
+			t = new Taquin(3,3);
 			System.out.println(t.toString());
 			//System.out.println("La distance de Mannathan est de :"+t.distanceManhattan());
 			//System.out.println("La nombre de permut est de :"+t.nbPermutFin());
@@ -32,7 +30,6 @@ public class Test {
 			jouer(t, s, pSortie);
 			//for(int i=0; i<10 ; i++)
 			//	pSortie.println( (int) ( Math.random() * 10 ) );
-		} catch (FileNotFoundException e) {System.out.println("Fichier introuvable");}
 
 	}
 
@@ -80,33 +77,4 @@ public class Test {
 		pSortie.println("Voici la liste des mouvements effectues : " + pJeu.getDeplacementEFfectue());
 	}
 
-	/**
-	 * Algorithme de resolution d'un jeu quelconque
-	 * <p>
-	 * Cette algorithme fais un parcours a approfondissement progressif
-	 * largeur/profondeur
-	 * </p>
-	 * 
-	 * @param pJeu
-	 * Le jeu a resoudre
-	 */
-	public static void algoSurChemin(Jeu pJeu) {
-		// Initialisations de quelques variables
-		Stack<Integer> cheminDeRecherche = new Stack<Integer>();
-		int profondeur = 0;
-		int nbtest = 4;
-
-		// Algorithme de parcours
-		while (!pJeu.estResolu()) {
-			profondeur++;
-			for (int i = 0; i < nbtest; i++) {
-
-			}
-			nbtest = nbtest * 4;
-		}
-	}
-	
-//	public static Taquin parseur(File ){
-		
-//	}
 }
