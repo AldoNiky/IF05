@@ -12,7 +12,7 @@ public interface Jeu {
 	 * @throws ImpossibleMoveException
 	 * Une exception est leve si le deplacement est impossible
 	 */
-	public void deplacement(int direction) throws IndexOutOfBoundsException;
+	public Jeu deplacement(int direction) throws IndexOutOfBoundsException;
 	/**
 	 * Affiche le jeu
 	 * @return
@@ -31,6 +31,4 @@ public interface Jeu {
 	 * Retourne une map
 	 */
 	public TreeMap<Character, Integer> getTabCorrespondance();
-	
-	public String getDeplacementEFfectue();
 }

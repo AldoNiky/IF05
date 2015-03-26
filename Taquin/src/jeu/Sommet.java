@@ -3,7 +3,7 @@ package jeu;
 import java.util.ArrayList;
 
 public class Sommet {
-	private Damier value;
+	private Taquin value;
 	private Sommet pere;
 	private int profondeur;
 	private String chemin;
@@ -14,12 +14,12 @@ public class Sommet {
 	 * @param pDam
 	 * Le damier de depart
 	 */
-	public Sommet(Damier pDam){
+	public Sommet(Taquin pDam){
 		value=pDam;
 		pere=null;
 		profondeur=0;
 		chemin=null;
-		manhattan=value.distanceManhattan();
+		manhattan=value.sommeManhattan();
 	}
 	
 	/**
@@ -32,7 +32,7 @@ public class Sommet {
 	public Sommet(Sommet pPere, int pAction){
 		pere=pPere;
 		chemin=pere.getChemin()+pAction;
-		value=pere.getValue().deplacement(pAction);
+		value=(Taquin) pere.getValue().deplacement(pAction);
 		profondeur=pere.getProfondeur()+1;
 	}
 	
@@ -56,11 +56,11 @@ public class Sommet {
 		return chemin.charAt(chemin.length());
 	}
 
-	public Damier getValue() {
+	public Taquin getValue() {
 		return value;
 	}
 
-	public void setValue(Damier value) {
+	public void setValue(Taquin value) {
 		this.value = value;
 	}
 

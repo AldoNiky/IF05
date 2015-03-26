@@ -16,7 +16,7 @@ public class Test {
 //		Taquin t = new Taquin(Integer.parseInt(args[0]),
 //				Integer.parseInt(args[1]));
 		Taquin t;
-			t = new Taquin(3,3);
+			t = new Taquin(3,3, );
 			System.out.println(t.toString());
 			//System.out.println("La distance de Mannathan est de :"+t.distanceManhattan());
 			//System.out.println("La nombre de permut est de :"+t.nbPermutFin());
@@ -74,7 +74,7 @@ public class Test {
 		pSortie.println((char) Event.ESCAPE + "8");
 		pSortie.println(pJeu);
 		pSortie.println("Bravo vous avez gagne");
-		pSortie.println("Voici la liste des mouvements effectues : " + pJeu.getDeplacementEFfectue());
+		pSortie.println("Voici la liste des mouvements effectues : " + deplacements);
 	}
 
 }

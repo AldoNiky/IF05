@@ -3,10 +3,19 @@ package algo;
 import jeu.Sommet;
 
 public class EnsembleIncomplet implements EnsembleMarque {
+	private Sommet[] ensemble;
+	
+	public EnsembleIncomplet(int taille){
+		ensemble=new Sommet[taille];
+	}
 	
 	@Override
 	public void ajout(Sommet pSommmet) {
-		// TODO Auto-generated method stub
+		Sommet som=pSommet.pere().succ()
+		int pos=pSommet.hasCode()%ensemble.length;
+		if(ensemble[pos]==null){
+			
+		}
 
 	}
 
